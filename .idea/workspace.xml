@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="ecd46e4f-8aa4-496c-b4a3-2ebd50ecf1f1" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/../../.vscode/c_cpp_properties.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../.vscode/launch.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../.vscode/settings.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../.vscode/tasks.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../imm2324-gr3/IA/first_moves.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../imm2324-gr3/IA/first_moves.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../imm2324-gr3/IA/small_functions.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../imm2324-gr3/IA/small_functions.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../imm2324-gr3/graphics.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../imm2324-gr3/graphics/123.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../imm2324-gr3/graphics/abc.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../imm2324-gr3/graphics/blue.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../imm2324-gr3/graphics/bottom_strip.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../imm2324-gr3/graphics/red.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../imm2324-gr3/graphics/right_strip.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../imm2324-gr3/main.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../imm2324-gr3/settings/const.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../imm2324-gr3/utils/checkers.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../imm2324-gr3/utils/checkers.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../imm2324-gr3/utils/grid_utils.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../../imm2324-gr3/utils/grid_utils.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notes.txt" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Dockerfile" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 8
+}</component>
+  <component name="ProjectId" id="2dKRjzj27EMy1BaELVv0O6IBzL9" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/home/super_mo/Documents/ensisa/java/NeoShape/src",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="graphics" />
+      <recent name="" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/graphics" />
+      <recent name="$PROJECT_DIR$/src/graphics" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="SimpleWindow" type="Application" factoryName="Application" nameIsGenerated="true">
+      <option name="ALTERNATIVE_JRE_PATH" value="20" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="MAIN_CLASS_NAME" value="graphics.SimpleWindow" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="graphics.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SimpleWindow.java" type="Application" factoryName="Application">
+      <option name="ALTERNATIVE_JRE_PATH" value="20" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="MAIN_CLASS_NAME" value="SimpleWindow" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="ecd46e4f-8aa4-496c-b4a3-2ebd50ecf1f1" name="Changes" comment="" />
+      <created>1709754922524</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1709754922524</updated>
+      <workItem from="1709754923615" duration="90000" />
+      <workItem from="1709755063253" duration="2201000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
