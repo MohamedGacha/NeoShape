@@ -1,0 +1,17 @@
+miaw
+
+swing implementation example of union intersection etc:
+        public void paintComponent(Graphics g) {
+        Graphics2D g2 = (Graphics2D)g;
+        ...
+        Area areaOne = new Area(ellipse);
+        Area areaTwo = new Area(rectangle);
+        if (option.equals("add")) areaOne.add(areaTwo);
+        else if (option.equals("intersection")) areaOne.intersect(areaTwo);
+        else if (option.equals("subtract")) areaOne.subtract(areaTwo);
+        else if (option.equals("exclusive or")) areaOne.exclusiveOr(areaTwo);
+        g2.setPaint(Color.orange);
+        g2.fill(areaOne);
+        g2.setPaint(Color.black);
+        g2.draw(areaOne);
+        }
