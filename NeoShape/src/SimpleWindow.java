@@ -2,7 +2,6 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-
 public class SimpleWindow {
     private static Canvas canvas; // Declare canvas as a class variable to make it accessible
     private static Color chosenColor = Color.WHITE; // Store the chosen color
