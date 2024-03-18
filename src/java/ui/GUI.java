@@ -5,15 +5,10 @@ import javax.swing.*;
 public class GUI {
 
     private JButton New;
-    private JButton action1;
-    private JToolBar ActionBar;
-    private JButton Action3;
-    private JButton Action2;
     private JButton Open;
     private JButton Save;
     private JButton Server;
     private JButton Exit;
-    private JButton Action4;
     private JButton ZoomIn;
     private JSpinner spinner1;
     private JButton ZoomOut;
@@ -28,6 +23,12 @@ public class GUI {
     private JSpinner spinner3;
     private JSlider slider1;
     private JRadioButton radioButton1;
+    private JToolBar ActionBar;
+    private JButton action1;
+    private JButton Action2;
+    private JButton Action3;
+    private JButton Action4;
+    private JPanel canvas;
 
     private void createUIComponents() {
 
