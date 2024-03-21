@@ -1,6 +1,4 @@
-miaw
-
-swing implementation example of union intersection etc:
+* swing implementation example of union intersection etc:
         public void paintComponent(Graphics g) {
         Graphics2D g2 = (Graphics2D)g;
         ...
@@ -15,3 +13,30 @@ swing implementation example of union intersection etc:
         g2.setPaint(Color.black);
         g2.draw(areaOne);
         }
+
+
+* shapes subclasses:
+    - polygon [awt] (defined by list of points):
+        - rectangle [awt]:
+            - square
+    - ellipse [geom.Ellipse2D.Double/Float]: (choose double or float will depending on the canvas' precision )
+        - circle (width = height)
+    - arc [geom.arc2d]
+    - polyline ( DONT make it mother of polygon cuz polygon is not only a polyline which endpoint=startpoint but should also check if lines intersect with each other, math stufff)
+        - triangle (choose method of creation of ur choice/ use multiple creation methods)
+
+* each sub-shape needs to have:
+    - constructor
+    - draw
+    - select (tricky for some)
+    - unselect
+    - getLayer for advanced selection
+    -? fill
+    -? getcenter/getpoints/...
+
+
+* set buffering strategy and other settings for jframe
+
+* will not use a shape mother class, because if i do i wont be able to make the class Ellipse a child of both Shape and awt.Ellipse2d, i will have to add a middleclass between them and i'd rather use interface and keep the uml class structure as small as possible
+* also shape is already defined in awt as an interface, so all the predefined classes that will be used already have it
+* canvastools contains the needed functions for canvas operations (select,fill,draaw...)
