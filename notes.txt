@@ -16,8 +16,8 @@
 
 
 * shapes subclasses:
-    - polygon [awt] (defined by list of points):
-        - rectangle [awt]:
+    - awt.Polygon [awt] (defined by list of points):
+    - rectangle [awt]:
             - square
     - ellipse [geom.Ellipse2D.Double/Float]: (choose double or float will depending on the canvas' precision )
         - circle (width = height)

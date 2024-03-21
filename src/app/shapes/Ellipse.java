@@ -2,6 +2,7 @@ package app.shapes;
 
 import java.awt.*;
 
+// precision
 public class Ellipse extends java.awt.geom.Ellipse2D.Double implements CanvasTools{
     /** Ellipse class with double precision
      *

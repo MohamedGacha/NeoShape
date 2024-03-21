@@ -1,10 +1,10 @@
 package app.shapes;
 
 import java.awt.*;
+import java.awt.geom.Path2D;
 
-// precision
-public class Rectangle extends java.awt.geom.Rectangle2D.Double implements CanvasTools{
-
+// precision here
+public class Polyline extends Path2D.Double implements CanvasTools{
     /**
      *
      */

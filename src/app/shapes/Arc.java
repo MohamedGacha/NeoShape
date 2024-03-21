@@ -2,8 +2,9 @@ package app.shapes;
 
 import java.awt.*;
 
+
 // precision
-public class Rectangle extends java.awt.geom.Rectangle2D.Double implements CanvasTools{
+public class Arc extends java.awt.geom.Arc2D.Double implements CanvasTools{
 
     /**
      *
