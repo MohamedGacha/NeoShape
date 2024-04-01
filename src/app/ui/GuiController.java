@@ -101,13 +101,7 @@ public class GuiController extends JPanel{
 
                         updateMousePosition(e);
 
-                        double new_upper_corner_x = Math.min(e.getX(), r.getX());
-                        double new_upper_corner_y = Math.min(e.getY(), r.getY());
-                        double new_width = Math.abs(e.getX() - r.getX());
-                        double new_height = Math.abs(e.getY() - r.getY());
-
-                        r.setRect(new_upper_corner_x,new_upper_corner_y,new_width,new_height);
-
+                        r.updateRectDimensions(e,DrawingArea.getWidth(),DrawingArea.getHeight(),strokeCurrentWidth);
 
                         DrawingArea.repaint();
                         //System.out.println("dragged a rectangle!");
@@ -180,32 +174,10 @@ public class GuiController extends JPanel{
 
                         updateMousePosition(e);
 
-                        double newUpperCornerX = Math.max(Math.min(e.getX(), r.getX()),0);
-                        double newUpperCornerY = Math.max(Math.min(e.getY(), r.getY()),0);
-                        double newWidth = Math.abs(e.getX() - r.getX());
-                        double newHeight = Math.abs(e.getY() - r.getY());
+                        r.updateRectDimensions(e,DrawingArea.getWidth(),DrawingArea.getHeight(),strokeCurrentWidth);
 
-                        //  size of drawing panel
-                        int panelWidth = DrawingArea.getSize().width;
-                        int panelHeight = DrawingArea.getSize().height;
-
-                        // make sure the rectangle is within the drawing panel's bounds
-                        if (newUpperCornerX + newWidth > panelWidth) {
-                            newWidth = panelWidth - newUpperCornerX;
-                        }
-                        if (newUpperCornerY + newHeight > panelHeight) {
-                            newHeight = panelHeight - newUpperCornerY;
-                        }
-
-                        r.setRect(newUpperCornerX, newUpperCornerY, newWidth, newHeight);
-
-//                        Graphics2D gg = GetDrawingAreaGraphics2D();
-//                        gg.setStroke(CurrentStroke);
-//                        gg.setPaint(CurrentPaint);
-//
-//                        r.draw(gg);
                         DrawingArea.repaint();
-                        System.out.println("finished drawing a rectangle, up left corner @ (" + newUpperCornerX + "," + newUpperCornerY + ")");
+                        System.out.println("finished drawing a rectangle, up left corner @ (" + r.getX() + "," + r.getY() + ")");
                         System.out.println(DrawingArea.getShapesList());
                         //setCurrentMode(MouseMode.SELECTION);
                         break;
