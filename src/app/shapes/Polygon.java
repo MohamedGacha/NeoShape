@@ -9,7 +9,7 @@ public class Polygon extends java.awt.Polygon implements CanvasTools{
      *
      */
     @Override
-    public void draw() {
+    public void draw(Graphics2D g2d) {
 
     }
 

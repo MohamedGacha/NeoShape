@@ -8,7 +8,7 @@ public class Ellipse extends java.awt.geom.Ellipse2D.Double implements CanvasToo
      *
      */
     @Override
-    public void draw() {
+    public void draw(Graphics2D g2d) {
 
     }
 

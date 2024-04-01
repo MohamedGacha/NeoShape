@@ -5,7 +5,7 @@ import java.awt.*;
 public interface CanvasTools {
 
 
-    public abstract void draw();
+    public abstract void draw(Graphics2D g2d);
 
     public abstract boolean select(Point p);
 

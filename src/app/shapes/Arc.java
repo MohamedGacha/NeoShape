@@ -10,7 +10,7 @@ public class Arc extends java.awt.geom.Arc2D.Double implements CanvasTools{
      *
      */
     @Override
-    public void draw() {
+    public void draw(Graphics2D g2d) {
 
     }
 

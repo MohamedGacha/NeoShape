@@ -9,7 +9,7 @@ public class Polyline extends Path2D.Double implements CanvasTools{
      *
      */
     @Override
-    public void draw() {
+    public void draw(Graphics2D g2d) {
 
     }
 
