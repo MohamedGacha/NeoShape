@@ -1,6 +1,7 @@
 package app.shapes;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
 
 
 // this class is created especially for the output of operations that create objects with empty space between them
@@ -13,6 +14,17 @@ public class Area implements CanvasTools{
      */
     @Override
     public void draw(Graphics2D g2d) {
+
+    }
+
+    /**
+     * @param e
+     * @param panelWidth
+     * @param panelHeight
+     * @param strokeWidth
+     */
+    @Override
+    public void updateShapeDimensions(MouseEvent e, int panelWidth, int panelHeight, int strokeWidth) {
 
     }
 

@@ -1,6 +1,7 @@
 package app.shapes;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
 import java.awt.geom.Path2D;
 
 // precision here
@@ -10,6 +11,17 @@ public class Polyline extends Path2D.Double implements CanvasTools{
      */
     @Override
     public void draw(Graphics2D g2d) {
+
+    }
+
+    /**
+     * @param e
+     * @param panelWidth
+     * @param panelHeight
+     * @param strokeWidth
+     */
+    @Override
+    public void updateShapeDimensions(MouseEvent e, int panelWidth, int panelHeight, int strokeWidth) {
 
     }
 

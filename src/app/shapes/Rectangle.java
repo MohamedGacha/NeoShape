@@ -19,15 +19,19 @@ public class Rectangle extends java.awt.geom.Rectangle2D.Double implements Canva
     }
 
 
-    public void updateRectDimensions(java.awt.event.MouseEvent e,int panelWidth,int panelHeight, int strokeWidth){
+    public void updateShapeDimensions(java.awt.event.MouseEvent e,int panelWidth,int panelHeight, int strokeWidth){
         double newUpperCornerX = Math.max(Math.min(e.getX(), this.getX()),0);
         double newUpperCornerY = Math.max(Math.min(e.getY(), this.getY()),0);
         double newWidth = Math.abs(e.getX() - this.getX());
         double newHeight = Math.abs(e.getY() - this.getY());
 
-        // the mousedrag event keeps firing until mouse is released, so we need to check if width has changed first
-        if(newWidth > RECTANGLE_MIN_WIDTH && newHeight > RECTANGLE_MIN_HEIGHT){
+        if(newUpperCornerX <= this.getX()){ // left side, need to also increase width, not change whole
+            newWidth = Math.abs(e.getX() - this.getX()) + this.getWidth();
+        }
 
+        if(newUpperCornerY <= this.getY()){ // up side, need to also increase width, not change whole
+            newHeight = Math.abs(e.getY() - this.getY()) + this.getHeight();
+        }
 
 
 
@@ -42,7 +46,7 @@ public class Rectangle extends java.awt.geom.Rectangle2D.Double implements Canva
         }
 
         this.setRect(newUpperCornerX, newUpperCornerY, newWidth, newHeight);
-        }
+
     }
 
     @Override

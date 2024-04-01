@@ -101,7 +101,7 @@ public class GuiController extends JPanel{
 
                         updateMousePosition(e);
 
-                        r.updateRectDimensions(e,DrawingArea.getWidth(),DrawingArea.getHeight(),strokeCurrentWidth);
+                        r.updateShapeDimensions(e,DrawingArea.getWidth(),DrawingArea.getHeight(),strokeCurrentWidth);
 
                         DrawingArea.repaint();
                         //System.out.println("dragged a rectangle!");
@@ -174,7 +174,7 @@ public class GuiController extends JPanel{
 
                         updateMousePosition(e);
 
-                        r.updateRectDimensions(e,DrawingArea.getWidth(),DrawingArea.getHeight(),strokeCurrentWidth);
+                        r.updateShapeDimensions(e,DrawingArea.getWidth(),DrawingArea.getHeight(),strokeCurrentWidth);
 
                         DrawingArea.repaint();
                         System.out.println("finished drawing a rectangle, up left corner @ (" + r.getX() + "," + r.getY() + ")");
