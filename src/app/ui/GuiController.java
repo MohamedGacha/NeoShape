@@ -1,6 +1,8 @@
 package app.ui;
 
 import app.JPanelWrapper;
+import app.shapes.Ellipse;
+import app.shapes.Circle;
 import app.shapes.Rectangle;
 
 import javax.swing.*;
@@ -47,7 +49,7 @@ public class GuiController extends JPanel{
     private MouseMode CurrentMode;
 
     {
-        CurrentMode = MouseMode.DRAWING_RECTANGLE; // default mode is selection mode
+        CurrentMode = MouseMode.DRAWING_CIRCLE; // default mode is selection mode
     }
 
     private Paint CurrentPaint = new Color(0, 255, 255);
@@ -107,6 +109,40 @@ public class GuiController extends JPanel{
                         //System.out.println("dragged a rectangle!");
 
                         break;
+                    case DRAWING_ELLIPSE:
+                        super.mouseDragged(e);
+                        //System.out.print("mouse dragged from ("+ mousePosition.x + "," + mousePosition.y + ") to (");
+                        //updateMousePosition(e);
+                        //System.out.println(mousePosition.x + "," + mousePosition.y + ")");
+
+
+                        Ellipse eli = (Ellipse) DrawingArea.getLastShape();
+
+                        updateMousePosition(e);
+
+                        eli.updateShapeDimensions(e,DrawingArea.getWidth(),DrawingArea.getHeight(),strokeCurrentWidth);
+
+                        DrawingArea.repaint();
+                        //System.out.println("dragged a rectangle!");
+
+                        break;
+                    case DRAWING_CIRCLE:
+                        super.mouseDragged(e);
+                        //System.out.print("mouse dragged from ("+ mousePosition.x + "," + mousePosition.y + ") to (");
+                        //updateMousePosition(e);
+                        //System.out.println(mousePosition.x + "," + mousePosition.y + ")");
+
+
+                        Circle circle= (Circle) DrawingArea.getLastShape();
+
+                        updateMousePosition(e);
+
+                        circle.updateShapeDimensions(e,DrawingArea.getWidth(),DrawingArea.getHeight(),strokeCurrentWidth);
+
+                        DrawingArea.repaint();
+                        //System.out.println("dragged a rectangle!");
+
+                        break;
                     case SELECTION:
                         // Handle selection mode
                         System.out.println("selection mode!!");
@@ -135,6 +171,10 @@ public class GuiController extends JPanel{
 
             @Override
             public void  mousePressed(MouseEvent e) {
+                Graphics2D gg = GetDrawingAreaGraphics2D();
+                gg.setStroke(CurrentStroke);
+                gg.setPaint(CurrentPaint);
+
                 switch (getCurrentMode()) {
                     case DRAWING_RECTANGLE:
                         // drawing mode
@@ -143,14 +183,40 @@ public class GuiController extends JPanel{
 
                         Rectangle r = new Rectangle(mousePosition,1,1);
 
-                        Graphics2D gg = GetDrawingAreaGraphics2D();
-                        gg.setStroke(CurrentStroke);
-                        gg.setPaint(CurrentPaint);
+
 
                         r.draw(gg);
 
 
                         DrawingArea.addShape(r);
+                        break;
+                    case DRAWING_ELLIPSE:
+                        // drawing mode
+                        System.out.println("RECTANGLE drawing mode!!");
+                        updateMousePosition(e);
+
+                        Ellipse eli = new Ellipse(mousePosition,1,1);
+
+
+
+                        eli.draw(gg);
+
+
+                        DrawingArea.addShape(eli);
+                        break;
+                    case DRAWING_CIRCLE:
+                        // drawing mode
+                        System.out.println("Circle drawing mode!!");
+                        updateMousePosition(e);
+
+                        Circle circle = new Circle(mousePosition,1);
+
+
+
+                        circle.draw(gg);
+
+
+                        DrawingArea.addShape(circle);
                         break;
                     case SELECTION:
                         // Handle selection mode
@@ -178,6 +244,34 @@ public class GuiController extends JPanel{
 
                         DrawingArea.repaint();
                         System.out.println("finished drawing a rectangle, up left corner @ (" + r.getX() + "," + r.getY() + ")");
+                        System.out.println(DrawingArea.getShapesList());
+                        //setCurrentMode(MouseMode.SELECTION);
+                        break;
+                    case DRAWING_ELLIPSE:
+                        super.mouseReleased(e);
+
+                        Ellipse eli = (Ellipse) DrawingArea.getLastShape();
+
+                        updateMousePosition(e);
+
+                        eli.updateShapeDimensions(e,DrawingArea.getWidth(),DrawingArea.getHeight(),strokeCurrentWidth);
+
+                        DrawingArea.repaint();
+                        System.out.println("finished drawing a rectangle, up left corner @ (" + eli.getX() + "," + eli.getY() + ")");
+                        System.out.println(DrawingArea.getShapesList());
+                        //setCurrentMode(MouseMode.SELECTION);
+                        break;
+                    case DRAWING_CIRCLE:
+                        super.mouseReleased(e);
+
+                        Circle circle = (Circle) DrawingArea.getLastShape();
+
+                        updateMousePosition(e);
+
+                        circle.updateShapeDimensions(e,DrawingArea.getWidth(),DrawingArea.getHeight(),strokeCurrentWidth);
+
+                        DrawingArea.repaint();
+                        System.out.println("finished drawing a rectangle, up left corner @ (" + circle.getX() + "," + circle.getY() + ")");
                         System.out.println(DrawingArea.getShapesList());
                         //setCurrentMode(MouseMode.SELECTION);
                         break;
