@@ -4,6 +4,7 @@ import app.JPanelWrapper;
 import app.shapes.Ellipse;
 import app.shapes.Circle;
 import app.shapes.Rectangle;
+import app.shapes.Square;
 
 import javax.swing.*;
 import java.awt.*;
@@ -46,10 +47,12 @@ public class GuiController extends JPanel{
 
     //int mouseDragdX, mouseDragdY;
     private Point mousePosition; // relative to DrawingArea
+
+    private Point FirstMousePressPosition;
     private MouseMode CurrentMode;
 
     {
-        CurrentMode = MouseMode.DRAWING_CIRCLE; // default mode is selection mode
+        CurrentMode = MouseMode.DRAWING_SQUARE; // default mode is selection mode
     }
 
     private Paint CurrentPaint = new Color(0, 255, 255);
@@ -91,9 +94,9 @@ public class GuiController extends JPanel{
         DrawingArea.addMouseMotionListener(new MouseAdapter() {
             @Override
             public void mouseDragged(MouseEvent e) {
+                super.mouseDragged(e);
                 switch (getCurrentMode()) {
                     case DRAWING_RECTANGLE:
-                        super.mouseDragged(e);
                         //System.out.print("mouse dragged from ("+ mousePosition.x + "," + mousePosition.y + ") to (");
                         //updateMousePosition(e);
                         //System.out.println(mousePosition.x + "," + mousePosition.y + ")");
@@ -103,14 +106,13 @@ public class GuiController extends JPanel{
 
                         updateMousePosition(e);
 
-                        r.updateShapeDimensions(e,DrawingArea.getWidth(),DrawingArea.getHeight(),strokeCurrentWidth);
+                        r.DraggedUpdateShapeDimensions(FirstMousePressPosition,e,DrawingArea.getWidth(),DrawingArea.getHeight(),strokeCurrentWidth);
 
                         DrawingArea.repaint();
                         //System.out.println("dragged a rectangle!");
 
                         break;
                     case DRAWING_ELLIPSE:
-                        super.mouseDragged(e);
                         //System.out.print("mouse dragged from ("+ mousePosition.x + "," + mousePosition.y + ") to (");
                         //updateMousePosition(e);
                         //System.out.println(mousePosition.x + "," + mousePosition.y + ")");
@@ -127,7 +129,6 @@ public class GuiController extends JPanel{
 
                         break;
                     case DRAWING_CIRCLE:
-                        super.mouseDragged(e);
                         //System.out.print("mouse dragged from ("+ mousePosition.x + "," + mousePosition.y + ") to (");
                         //updateMousePosition(e);
                         //System.out.println(mousePosition.x + "," + mousePosition.y + ")");
@@ -138,6 +139,23 @@ public class GuiController extends JPanel{
                         updateMousePosition(e);
 
                         circle.updateShapeDimensions(e,DrawingArea.getWidth(),DrawingArea.getHeight(),strokeCurrentWidth);
+
+                        DrawingArea.repaint();
+                        //System.out.println("dragged a rectangle!");
+
+                        break;
+                    case DRAWING_SQUARE:
+
+                        //System.out.print("mouse dragged from ("+ mousePosition.x + "," + mousePosition.y + ") to (");
+                        //updateMousePosition(e);
+                        //System.out.println(mousePosition.x + "," + mousePosition.y + ")");
+
+
+                        Square square = (Square) DrawingArea.getLastShape();
+
+                        updateMousePosition(e);
+
+                        square.DraggedUpdateShapeDimensions(FirstMousePressPosition,e,DrawingArea.getWidth(),DrawingArea.getHeight(),strokeCurrentWidth);
 
                         DrawingArea.repaint();
                         //System.out.println("dragged a rectangle!");
@@ -166,14 +184,24 @@ public class GuiController extends JPanel{
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 System.out.println("mouse clicked!");
+
+                //updateMousePosition(e);
+
+
+
                 // select object
             }
 
             @Override
             public void  mousePressed(MouseEvent e) {
+                super.mousePressed(e);
                 Graphics2D gg = GetDrawingAreaGraphics2D();
                 gg.setStroke(CurrentStroke);
                 gg.setPaint(CurrentPaint);
+
+                FirstMousePressPosition = e.getPoint();
+                SwingUtilities.convertPoint(e.getComponent(),FirstMousePressPosition,DrawingArea);
+                //SwingUtilities.convertPointFromScreen(FirstMousePressPosition,DrawingArea); // DONT USE, WILL GIVE FAULTY COORDINATES
 
                 switch (getCurrentMode()) {
                     case DRAWING_RECTANGLE:
@@ -190,9 +218,25 @@ public class GuiController extends JPanel{
 
                         DrawingArea.addShape(r);
                         break;
+
+                    case DRAWING_SQUARE:
+
+                        System.out.println("SQUARE drawing mode!!");
+                        updateMousePosition(e);
+
+                        Square square = new Square(mousePosition,1);
+
+
+
+                        square.draw(gg);
+
+
+                        DrawingArea.addShape(square);
+
+                        break;
                     case DRAWING_ELLIPSE:
                         // drawing mode
-                        System.out.println("RECTANGLE drawing mode!!");
+                        System.out.println("ELLIPSE drawing mode!!");
                         updateMousePosition(e);
 
                         Ellipse eli = new Ellipse(mousePosition,1,1);
@@ -232,9 +276,10 @@ public class GuiController extends JPanel{
 
             @Override
             public void mouseReleased(MouseEvent e) {
+                super.mouseReleased(e);
                 switch (getCurrentMode()) {
                     case DRAWING_RECTANGLE:
-                        super.mouseReleased(e);
+
 
                         Rectangle r = (Rectangle) DrawingArea.getLastShape();
 
@@ -248,7 +293,6 @@ public class GuiController extends JPanel{
                         //setCurrentMode(MouseMode.SELECTION);
                         break;
                     case DRAWING_ELLIPSE:
-                        super.mouseReleased(e);
 
                         Ellipse eli = (Ellipse) DrawingArea.getLastShape();
 
@@ -261,8 +305,20 @@ public class GuiController extends JPanel{
                         System.out.println(DrawingArea.getShapesList());
                         //setCurrentMode(MouseMode.SELECTION);
                         break;
+                    case DRAWING_SQUARE:
+
+                        Square square = (Square) DrawingArea.getLastShape();
+
+                        updateMousePosition(e);
+
+                        square.updateShapeDimensions(e,DrawingArea.getWidth(),DrawingArea.getHeight(),strokeCurrentWidth);
+
+                        DrawingArea.repaint();
+                        System.out.println("finished drawing a rectangle, up left corner @ (" + square.getX() + "," + square.getY() + ")");
+                        System.out.println(DrawingArea.getShapesList());
+                        //setCurrentMode(MouseMode.SELECTION);
+                        break;
                     case DRAWING_CIRCLE:
-                        super.mouseReleased(e);
 
                         Circle circle = (Circle) DrawingArea.getLastShape();
 
