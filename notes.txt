@@ -40,3 +40,5 @@
 * will not use a shape mother class, because if i do i wont be able to make the class Ellipse a child of both Shape and awt.Ellipse2d, i will have to add a middleclass between them and i'd rather use interface and keep the uml class structure as small as possible
 * also shape is already defined in awt as an interface, so all the predefined classes that will be used already have it
 * canvastools contains the needed functions for canvas operations (select,fill,draaw...)
+
+* need to fix stroke + color refreshing whenever want to redraw

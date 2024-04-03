@@ -43,13 +43,6 @@ public class Arc extends java.awt.geom.Arc2D.Double implements CanvasTools{
         return false;
     }
 
-    /**
-     *
-     */
-    @Override
-    public void fill() {
-
-    }
 
     /**
      * @return

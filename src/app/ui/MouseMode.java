@@ -11,6 +11,8 @@ public enum MouseMode {
     SELECTION,
     PAN,
     UNION,
-    INTERSECTION
+    INTERSECTION,
+    XOR,
+    SUBSTRACTION
     // ...
 }

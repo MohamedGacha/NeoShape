@@ -175,40 +175,40 @@
             </properties>
             <border type="none"/>
             <children>
-              <component id="857fa" class="javax.swing.JButton" binding="Form1">
+              <component id="857fa" class="javax.swing.JButton" binding="rectangleDrawingModeButton">
                 <constraints/>
                 <properties>
-                  <enabled value="false"/>
+                  <enabled value="true"/>
                   <maximumSize width="60" height="60"/>
                   <minimumSize width="60" height="60"/>
                   <preferredSize width="60" height="60"/>
-                  <text value="Form1"/>
+                  <text value="▭"/>
                 </properties>
               </component>
-              <component id="8d9df" class="javax.swing.JButton" binding="Form2">
+              <component id="8d9df" class="javax.swing.JButton" binding="circleDrawingModeButton">
                 <constraints/>
                 <properties>
-                  <enabled value="false"/>
+                  <enabled value="true"/>
                   <maximumSize width="60" height="60"/>
                   <minimumSize width="60" height="60"/>
                   <preferredSize width="60" height="60"/>
-                  <text value="Form2"/>
+                  <text value="◯"/>
                 </properties>
               </component>
-              <component id="1c990" class="javax.swing.JButton" binding="Form3">
+              <component id="1c990" class="javax.swing.JButton" binding="ellipseDrawingModeButton">
                 <constraints/>
                 <properties>
-                  <enabled value="false"/>
+                  <enabled value="true"/>
                   <maximumSize width="60" height="60"/>
                   <minimumSize width="60" height="60"/>
                   <preferredSize width="60" height="60"/>
-                  <text value="Form3"/>
+                  <text value="⬭"/>
                 </properties>
               </component>
               <component id="d9c39" class="javax.swing.JButton" binding="Form4">
                 <constraints/>
                 <properties>
-                  <enabled value="false"/>
+                  <enabled value="true"/>
                   <maximumSize width="60" height="60"/>
                   <minimumSize width="60" height="60"/>
                   <preferredSize width="60" height="60"/>
@@ -218,7 +218,7 @@
               <component id="84052" class="javax.swing.JButton" binding="Form5">
                 <constraints/>
                 <properties>
-                  <enabled value="false"/>
+                  <enabled value="true"/>
                   <maximumSize width="60" height="60"/>
                   <minimumSize width="60" height="60"/>
                   <preferredSize width="60" height="60"/>
@@ -228,7 +228,7 @@
               <component id="c7e7" class="javax.swing.JButton" binding="Form6">
                 <constraints/>
                 <properties>
-                  <enabled value="false"/>
+                  <enabled value="true"/>
                   <maximumSize width="60" height="60"/>
                   <minimumSize width="60" height="60"/>
                   <preferredSize width="60" height="60"/>
@@ -364,49 +364,44 @@
             </properties>
             <border type="none"/>
             <children>
-              <toolbar id="223f7">
-                <constraints/>
-                <properties/>
-                <border type="none"/>
-                <children/>
-              </toolbar>
-              <component id="682ae" class="javax.swing.JButton" binding="action1">
+              <component id="682ae" class="javax.swing.JButton" binding="unionOperatorButton">
                 <constraints/>
                 <properties>
-                  <enabled value="false"/>
+                  <enabled value="true"/>
                   <maximumSize width="60" height="60"/>
                   <minimumSize width="60" height="60"/>
                   <preferredSize width="60" height="60"/>
-                  <text value="Action1"/>
+                  <text value="U"/>
                 </properties>
               </component>
-              <component id="f3551" class="javax.swing.JButton" binding="Action2">
+              <component id="f3551" class="javax.swing.JButton" binding="intersectionOperatorButton">
                 <constraints/>
                 <properties>
-                  <enabled value="false"/>
+                  <enabled value="true"/>
                   <maximumSize width="60" height="60"/>
                   <minimumSize width="60" height="60"/>
                   <preferredSize width="60" height="60"/>
-                  <text value="Action2"/>
+                  <text value="∩"/>
                 </properties>
               </component>
-              <component id="e247" class="javax.swing.JButton" binding="Action3">
+              <component id="2b17e" class="javax.swing.JButton" binding="substractOperatorButton">
                 <constraints/>
                 <properties>
-                  <enabled value="false"/>
-                  <minimumSize width="60" height="60"/>
-                  <preferredSize width="60" height="60"/>
-                  <text value="Action3"/>
-                </properties>
-              </component>
-              <component id="65f8f" class="javax.swing.JButton" binding="Action4">
-                <constraints/>
-                <properties>
-                  <enabled value="false"/>
+                  <enabled value="true"/>
                   <maximumSize width="60" height="60"/>
                   <minimumSize width="60" height="60"/>
                   <preferredSize width="60" height="60"/>
-                  <text value="Action4"/>
+                  <text value="-"/>
+                </properties>
+              </component>
+              <component id="65f8f" class="javax.swing.JButton" binding="xorOperatorButton">
+                <constraints/>
+                <properties>
+                  <enabled value="true"/>
+                  <maximumSize width="60" height="60"/>
+                  <minimumSize width="60" height="60"/>
+                  <preferredSize width="60" height="60"/>
+                  <text value="⊕"/>
                 </properties>
               </component>
               <hspacer id="b0b4b">

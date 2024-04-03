@@ -8,12 +8,19 @@ import java.util.Arrays;
 // precision
 public class Rectangle extends java.awt.geom.Rectangle2D.Double implements CanvasTools{
 
-    /**
-     *
-     */
 
-    private static final int RECTANGLE_MIN_WIDTH=4;
-    private static final int RECTANGLE_MIN_HEIGHT=4;
+
+    private Color fillColor; // default color
+    public void setFillColor(Color c) {
+        this.fillColor = c;
+    }
+
+    public Color getFillColor() {
+        return fillColor;
+    }
+
+
+
 
     public Rectangle(Point upper_left_point, double w, double h){
         super(upper_left_point.x,upper_left_point.y,w,h);
@@ -25,12 +32,16 @@ public class Rectangle extends java.awt.geom.Rectangle2D.Double implements Canva
 
         //double newupper_x,newupper_y,new_w,new_h;
 
-        System.out.println("********");
+        //System.out.println("********");
 
-        double newUpperX = Math.min(e.getX(), initialPressedPoint.getX());
-        double newUpperY = Math.min(e.getY(), initialPressedPoint.getY());
-        double newWidth = Math.abs(e.getX() - initialPressedPoint.getX());
-        double newHeight = Math.abs(e.getY() - initialPressedPoint.getY());
+
+        double newUpperX = Math.min(Math.max(0, e.getX()), Math.max(0, initialPressedPoint.getX()));
+        double newUpperY = Math.min(Math.max(0, e.getY()), Math.max(0, initialPressedPoint.getY()));
+        double newWidth = Math.min(Math.abs(e.getX() - initialPressedPoint.getX()), panelWidth - newUpperX);
+        double newHeight = Math.min(Math.abs(e.getY() - initialPressedPoint.getY()), panelHeight - newUpperY);
+
+        newWidth -= strokeWidth;// incase it sticks to edge
+        newHeight -= strokeWidth;
 
         this.setRect(newUpperX, newUpperY, newWidth, newHeight);
     }
@@ -44,7 +55,7 @@ public class Rectangle extends java.awt.geom.Rectangle2D.Double implements Canva
 
     @Override
     public void draw(Graphics2D g2d) {
-        g2d.draw(this);
+        g2d.fillRect((int) this.getX(), (int) this.getY(), (int) this.getWidth(), (int) this.getHeight());
         //System.out.println("drew a rectangle!!");
     }
 
@@ -53,9 +64,8 @@ public class Rectangle extends java.awt.geom.Rectangle2D.Double implements Canva
 
     @Override
     public boolean select(Point p) {
-        return false;
+        return this.contains(p.getX(), p.getY());
     }
-
     /**
      * @return
      */
@@ -64,13 +74,6 @@ public class Rectangle extends java.awt.geom.Rectangle2D.Double implements Canva
         return false;
     }
 
-    /**
-     *
-     */
-    @Override
-    public void fill() {
-
-    }
 
     /**
      * @return

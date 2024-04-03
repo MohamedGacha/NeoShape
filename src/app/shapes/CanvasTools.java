@@ -16,7 +16,6 @@ public interface CanvasTools {
 
     public abstract boolean unselect();
 
-    public abstract void fill();
 
     public abstract int getLayer();
 

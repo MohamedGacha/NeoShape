@@ -42,13 +42,7 @@ public class Polyline extends Path2D.Double implements CanvasTools{
         return false;
     }
 
-    /**
-     *
-     */
-    @Override
-    public void fill() {
 
-    }
 
     /**
      * @return

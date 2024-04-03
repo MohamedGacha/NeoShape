@@ -1,15 +1,16 @@
 package app.ui;
 
 import app.JPanelWrapper;
-import app.shapes.Ellipse;
-import app.shapes.Circle;
+import app.shapes.*;
 import app.shapes.Rectangle;
-import app.shapes.Square;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ListIterator;
 import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -25,40 +26,57 @@ public class GuiController extends JPanel{
     private JSpinner spinner1;
     private JButton ZoomOut;
     private JButton Mouse;
-    private JButton Form1;
-    private JButton Form2;
-    private JButton Form3;
+    private JButton rectangleDrawingModeButton;
+    private JButton circleDrawingModeButton;
+    private JButton ellipseDrawingModeButton;
     private JButton Form4;
     private JButton Form5;
     private JButton Form6;
     private JSpinner spinner3;
     private JSlider stroke_slider;
     private JToolBar ActionBar;
-    private JButton action1;
-    private JButton Action2;
-    private JButton Action3;
-    private JButton Action4;
+    private JButton unionOperatorButton;
+    private JButton intersectionOperatorButton;
+    private JButton xorOperatorButton;
     private JPanel MainPanel;
     private JCheckBox dashed_checkbox;
     private JRadioButton radioButton1;
 
     private JPanelWrapper DrawingArea;
     private JPanel RightToolboxPanel;
+    private JButton substractOperatorButton;
 
     //int mouseDragdX, mouseDragdY;
     private Point mousePosition; // relative to DrawingArea
 
     private Point FirstMousePressPosition;
+
+    private Area operationFirstArea = null,operationSecondArea = null;
+
+    private int posOperationFirstShape = -1,posOperationSecondShape = -1; // position of first and second shape for operations
+
+    public void resetOperatorVariables(){ // needs to be called whenever mode is changed
+        operationFirstArea = null;
+        operationSecondArea = null;
+        posOperationFirstShape = -1;
+        posOperationSecondShape = -1;
+
+    }
+    public Area getoperationFirstArea(){
+        return operationFirstArea;
+    }
+
+    public Area operationSecondArea(){
+        return operationSecondArea;
+    }
     private MouseMode CurrentMode;
 
     {
-        CurrentMode = MouseMode.DRAWING_SQUARE; // default mode is selection mode
+        CurrentMode = MouseMode.SELECTION; // default mode is selection mode
     }
 
-    private Paint CurrentPaint = new Color(0, 255, 255);
-
     int strokeCurrentWidth = 5;
-    private Stroke CurrentStroke = new BasicStroke(strokeCurrentWidth);
+
 
     private boolean DashedLineButton = false;
 
@@ -72,6 +90,7 @@ public class GuiController extends JPanel{
         return CurrentMode;
     }
 
+
     public void updateMousePosition(MouseEvent e){
         mousePosition = e.getLocationOnScreen();
         SwingUtilities.convertPointFromScreen(mousePosition,DrawingArea);
@@ -82,8 +101,58 @@ public class GuiController extends JPanel{
         return (Graphics2D) DrawingArea.getGraphics();
     }
 
-    private void updateCurrentStroke(){
-        CurrentStroke = new BasicStroke(strokeCurrentWidth);
+
+    private void shapeSelectionWorkflow(Point mousePosition) {
+
+        CanvasTools currentShape;
+        int i = DrawingArea.getNumberOfShapes() - 1;
+        // iterator starting from end of shapes list
+        ListIterator<CanvasTools> iter = DrawingArea.getShapesList().listIterator(i + 1);
+
+        while (iter.hasPrevious()) {
+            currentShape = iter.previous();
+            i--;
+            if (currentShape.select(mousePosition)) { // selected a shape
+                if (operationFirstArea == null) { // first shape not yet defined
+                    operationFirstArea = new Area((Shape) currentShape);
+                    posOperationFirstShape = i + 1;
+                    break; // stop iterating over the loop
+                } else { // first shape already selected
+                    if (currentShape != DrawingArea.getShapeAtIndex(posOperationFirstShape)) { // to avoid union and intersection on same shape
+                        operationSecondArea = new Area((Shape) currentShape);
+                        posOperationSecondShape = i + 1;
+                        break; // stop iterating over the loop
+                    } else {
+                        System.out.println("error: operations aren't reflexive!");
+                    }
+                }
+
+            }
+        }
+
+    }
+
+    public void doOperation(){ // automatically checks for current mode and does needed operation
+            if(operationFirstArea != null && operationSecondArea != null){ // both shapes defined
+                System.out.println("1st shape index: " + posOperationFirstShape + " 2nd shape index: " + posOperationSecondShape);
+
+                // modify first shape
+                switch (getCurrentMode()){
+                    case INTERSECTION -> operationFirstArea.intersect(operationSecondArea);
+                    case XOR -> operationFirstArea.exclusiveOr(operationSecondArea);
+                    case UNION -> operationFirstArea.add(operationSecondArea);
+                    case SUBSTRACTION -> operationFirstArea.subtract(operationSecondArea);
+                }
+
+                // save to array
+                DrawingArea.setShapeAtIndex((CanvasTools) operationFirstArea,posOperationFirstShape);
+
+                //delete the second shape
+                DrawingArea.deleteShape(posOperationSecondShape);
+
+                // reset variables
+                resetOperatorVariables();
+            }
     }
 
 
@@ -196,14 +265,15 @@ public class GuiController extends JPanel{
             public void  mousePressed(MouseEvent e) {
                 super.mousePressed(e);
                 Graphics2D gg = GetDrawingAreaGraphics2D();
-                gg.setStroke(CurrentStroke);
-                gg.setPaint(CurrentPaint);
 
                 FirstMousePressPosition = e.getPoint();
                 SwingUtilities.convertPoint(e.getComponent(),FirstMousePressPosition,DrawingArea);
                 //SwingUtilities.convertPointFromScreen(FirstMousePressPosition,DrawingArea); // DONT USE, WILL GIVE FAULTY COORDINATES
 
+
+
                 switch (getCurrentMode()) {
+
                     case DRAWING_RECTANGLE:
                         // drawing mode
                         System.out.println("RECTANGLE drawing mode!!");
@@ -255,8 +325,6 @@ public class GuiController extends JPanel{
 
                         Circle circle = new Circle(mousePosition,1);
 
-
-
                         circle.draw(gg);
 
 
@@ -277,9 +345,65 @@ public class GuiController extends JPanel{
             @Override
             public void mouseReleased(MouseEvent e) {
                 super.mouseReleased(e);
-                switch (getCurrentMode()) {
-                    case DRAWING_RECTANGLE:
 
+
+
+                switch (getCurrentMode()) {
+                    case INTERSECTION: // braces to creeate a new scope to avoid getting compiler errors due to same var names with union case
+                        updateMousePosition(e);
+
+                        shapeSelectionWorkflow(e.getPoint());
+
+                        doOperation();
+
+                        DrawingArea.repaint();
+                        //System.out.println("finished intersection operation");
+                        System.out.println(DrawingArea.getShapesList());
+                        //setCurrentMode(MouseMode.SELECTION);
+                        break;
+
+
+                    case UNION:
+                        updateMousePosition(e);
+
+                        shapeSelectionWorkflow(e.getPoint());
+
+                        doOperation();
+
+
+                        DrawingArea.repaint();
+                        //System.out.println("finished union operation");
+                        System.out.println(DrawingArea.getShapesList());
+                        //setCurrentMode(MouseMode.SELECTION);
+                        break;
+
+                    case XOR: // braces to creeate a new scope to avoid getting compiler errors due to same var names with union case
+                        updateMousePosition(e);
+
+                        shapeSelectionWorkflow(e.getPoint());
+
+                        doOperation();
+
+                        DrawingArea.repaint();
+                        //System.out.println("finished intersection operation");
+                        System.out.println(DrawingArea.getShapesList());
+                        //setCurrentMode(MouseMode.SELECTION);
+                        break;
+
+                    case SUBSTRACTION: // braces to creeate a new scope to avoid getting compiler errors due to same var names with union case
+                        updateMousePosition(e);
+
+                        shapeSelectionWorkflow(e.getPoint());
+
+                        doOperation();
+
+                        DrawingArea.repaint();
+                        //System.out.println("finished intersection operation");
+                        System.out.println(DrawingArea.getShapesList());
+                        //setCurrentMode(MouseMode.SELECTION);
+                        break;
+
+                    case DRAWING_RECTANGLE:
 
                         Rectangle r = (Rectangle) DrawingArea.getLastShape();
 
@@ -301,7 +425,7 @@ public class GuiController extends JPanel{
                         eli.updateShapeDimensions(e,DrawingArea.getWidth(),DrawingArea.getHeight(),strokeCurrentWidth);
 
                         DrawingArea.repaint();
-                        System.out.println("finished drawing a rectangle, up left corner @ (" + eli.getX() + "," + eli.getY() + ")");
+                        System.out.println("finished drawing an ELLIPSE, center @ (" + eli.getX() + "," + eli.getY() + ")");
                         System.out.println(DrawingArea.getShapesList());
                         //setCurrentMode(MouseMode.SELECTION);
                         break;
@@ -314,7 +438,7 @@ public class GuiController extends JPanel{
                         square.updateShapeDimensions(e,DrawingArea.getWidth(),DrawingArea.getHeight(),strokeCurrentWidth);
 
                         DrawingArea.repaint();
-                        System.out.println("finished drawing a rectangle, up left corner @ (" + square.getX() + "," + square.getY() + ")");
+                        System.out.println("finished drawing a square, up left corner @ (" + square.getX() + "," + square.getY() + ")");
                         System.out.println(DrawingArea.getShapesList());
                         //setCurrentMode(MouseMode.SELECTION);
                         break;
@@ -327,7 +451,7 @@ public class GuiController extends JPanel{
                         circle.updateShapeDimensions(e,DrawingArea.getWidth(),DrawingArea.getHeight(),strokeCurrentWidth);
 
                         DrawingArea.repaint();
-                        System.out.println("finished drawing a rectangle, up left corner @ (" + circle.getX() + "," + circle.getY() + ")");
+                        System.out.println("finished drawing a CIRCLE, center @ (" + circle.getX() + "," + circle.getY() + ")");
                         System.out.println(DrawingArea.getShapesList());
                         //setCurrentMode(MouseMode.SELECTION);
                         break;
@@ -358,10 +482,91 @@ public class GuiController extends JPanel{
                 }
                 System.out.println("changed stroke slider");
                 // update the stroke
-                updateCurrentStroke();
+                //updateCurrentStroke();
             }
         });
 
+        unionOperatorButton.addActionListener(new ActionListener() {
+            /**
+             * @param e the event to be processed
+             */
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                resetOperatorVariables();
+                CurrentMode = MouseMode.UNION;
+                System.out.println("set mode to union operation");
+            }
+        });
+
+
+
+
+        rectangleDrawingModeButton.addActionListener(new ActionListener() {
+            /**
+             * @param e the event to be processed
+             */
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                resetOperatorVariables();
+                CurrentMode = MouseMode.DRAWING_RECTANGLE;
+                System.out.println("set mode to rectangle drawing");
+            }
+        });
+        circleDrawingModeButton.addActionListener(new ActionListener() {
+            /**
+             * @param e the event to be processed
+             */
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                resetOperatorVariables();
+                CurrentMode = MouseMode.DRAWING_CIRCLE;
+                System.out.println("set mode to circle drawing");
+            }
+        });
+        ellipseDrawingModeButton.addActionListener(new ActionListener() {
+            /**
+             * @param e the event to be processed
+             */
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                resetOperatorVariables();
+                CurrentMode = MouseMode.DRAWING_ELLIPSE;
+                System.out.println("set mode to ellipse drawing");
+            }
+        });
+        intersectionOperatorButton.addActionListener(new ActionListener() {
+            /**
+             * @param e the event to be processed
+             */
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                resetOperatorVariables();
+                CurrentMode = MouseMode.INTERSECTION;
+                System.out.println("set mode to intersection operation");
+            }
+        });
+        substractOperatorButton.addActionListener(new ActionListener() {
+            /**
+             * @param e the event to be processed
+             */
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                resetOperatorVariables();
+                CurrentMode = MouseMode.SUBSTRACTION;
+                System.out.println("set mode to SUBSTRACTION operation");
+            }
+        });
+        xorOperatorButton.addActionListener(new ActionListener() {
+            /**
+             * @param e the event to be processed
+             */
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                resetOperatorVariables();
+                CurrentMode = MouseMode.XOR;
+                System.out.println("set mode to XOR operation");
+            }
+        });
     }
 
     public static void init() {

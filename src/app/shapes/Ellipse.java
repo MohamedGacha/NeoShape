@@ -14,8 +14,8 @@ public class Ellipse extends java.awt.geom.Ellipse2D.Double implements CanvasToo
 
     @Override
     public void draw(Graphics2D g2d) {
-        g2d.draw(this);
-        System.out.println("drew an ellipse!!");
+        g2d.fillOval((int) this.getX(), (int) this.getY(), (int) this.getWidth(), (int) this.getHeight());
+        System.out.println("drew an oval!!");
     }
 
     @Override
@@ -59,10 +59,7 @@ public class Ellipse extends java.awt.geom.Ellipse2D.Double implements CanvasToo
         return false;
     }
 
-    @Override
-    public void fill() {
-        // Fill the ellipse with color
-    }
+
 
     @Override
     public int getLayer() {

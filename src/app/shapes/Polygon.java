@@ -42,13 +42,7 @@ public class Polygon extends java.awt.Polygon implements CanvasTools{
         return false;
     }
 
-    /**
-     *
-     */
-    @Override
-    public void fill() {
 
-    }
 
     /**
      * @return

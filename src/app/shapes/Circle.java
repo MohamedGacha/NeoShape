@@ -11,11 +11,7 @@ public class Circle extends Ellipse {
         super(center, diameter, diameter); // Setting both width and height as diameter
     }
 
-    @Override
-    public void draw(Graphics2D g2d) {
-        g2d.draw(this);
-        System.out.println("drew a circle!!");
-    }
+
 
     @Override
     public void updateShapeDimensions(MouseEvent e, int panelWidth, int panelHeight, int strokeWidth) {
@@ -47,12 +43,4 @@ public class Circle extends Ellipse {
         this.setFrame(newX, newY, newDiameter, newDiameter);
     }
 
-    @Override
-    public boolean select(Point p) {
-        double centerX = this.getCenterX();
-        double centerY = this.getCenterY();
-        double radius = this.getWidth() / 2;
-        double distance = Math.sqrt(Math.pow(p.getX() - centerX, 2) + Math.pow(p.getY() - centerY, 2));
-        return distance <= radius;
-    }
 }
