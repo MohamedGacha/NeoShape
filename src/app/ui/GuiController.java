@@ -29,7 +29,7 @@ public class GuiController extends JPanel{
     private JButton rectangleDrawingModeButton;
     private JButton circleDrawingModeButton;
     private JButton ellipseDrawingModeButton;
-    private JButton Form4;
+    private JButton squareDrawingModeButton;
     private JButton Form5;
     private JButton Form6;
     private JSpinner spinner3;
@@ -494,13 +494,14 @@ public class GuiController extends JPanel{
             public void actionPerformed(ActionEvent e) {
                 resetOperatorVariables();
                 CurrentMode = MouseMode.UNION;
+                enableAllDrawingButtonsExcept(unionOperatorButton);
                 System.out.println("set mode to union operation");
             }
         });
 
 
 
-
+        Exit.addActionListener(e -> System.exit(0));
         rectangleDrawingModeButton.addActionListener(new ActionListener() {
             /**
              * @param e the event to be processed
@@ -508,7 +509,9 @@ public class GuiController extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
                 resetOperatorVariables();
-                CurrentMode = MouseMode.DRAWING_RECTANGLE;
+
+                setCurrentMode(MouseMode.DRAWING_RECTANGLE);
+                enableAllDrawingButtonsExcept(rectangleDrawingModeButton);
                 System.out.println("set mode to rectangle drawing");
             }
         });
@@ -519,7 +522,8 @@ public class GuiController extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
                 resetOperatorVariables();
-                CurrentMode = MouseMode.DRAWING_CIRCLE;
+                setCurrentMode(MouseMode.DRAWING_CIRCLE);
+                enableAllDrawingButtonsExcept(circleDrawingModeButton);
                 System.out.println("set mode to circle drawing");
             }
         });
@@ -530,8 +534,22 @@ public class GuiController extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
                 resetOperatorVariables();
-                CurrentMode = MouseMode.DRAWING_ELLIPSE;
+                setCurrentMode(MouseMode.DRAWING_ELLIPSE);
+                enableAllDrawingButtonsExcept(ellipseDrawingModeButton);
                 System.out.println("set mode to ellipse drawing");
+            }
+        });
+
+        squareDrawingModeButton.addActionListener(new ActionListener() {
+            /**
+             * @param e the event to be processed
+             */
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                resetOperatorVariables();
+                setCurrentMode(MouseMode.DRAWING_SQUARE);
+                enableAllDrawingButtonsExcept(squareDrawingModeButton);
+                System.out.println("set mode to square drawing");
             }
         });
         intersectionOperatorButton.addActionListener(new ActionListener() {
@@ -542,6 +560,7 @@ public class GuiController extends JPanel{
             public void actionPerformed(ActionEvent e) {
                 resetOperatorVariables();
                 CurrentMode = MouseMode.INTERSECTION;
+                enableAllDrawingButtonsExcept(intersectionOperatorButton);
                 System.out.println("set mode to intersection operation");
             }
         });
@@ -553,6 +572,7 @@ public class GuiController extends JPanel{
             public void actionPerformed(ActionEvent e) {
                 resetOperatorVariables();
                 CurrentMode = MouseMode.SUBSTRACTION;
+                enableAllDrawingButtonsExcept(substractOperatorButton);
                 System.out.println("set mode to SUBSTRACTION operation");
             }
         });
@@ -564,9 +584,22 @@ public class GuiController extends JPanel{
             public void actionPerformed(ActionEvent e) {
                 resetOperatorVariables();
                 CurrentMode = MouseMode.XOR;
+                enableAllDrawingButtonsExcept(xorOperatorButton);
                 System.out.println("set mode to XOR operation");
             }
         });
+    }
+
+    private void enableAllDrawingButtonsExcept(JButton buttonToExclude) {
+        rectangleDrawingModeButton.setEnabled(true);
+        circleDrawingModeButton.setEnabled(true);
+        ellipseDrawingModeButton.setEnabled(true);
+        squareDrawingModeButton.setEnabled(true);
+        intersectionOperatorButton.setEnabled(true);
+        unionOperatorButton.setEnabled(true);
+        xorOperatorButton.setEnabled(true);
+        substractOperatorButton.setEnabled(true);
+        buttonToExclude.setEnabled(false);// Disable the button that activated polyline mode
     }
 
     public static void init() {
