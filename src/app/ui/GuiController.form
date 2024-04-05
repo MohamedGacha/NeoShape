@@ -215,24 +215,24 @@
                   <text value="■"/>
                 </properties>
               </component>
-              <component id="84052" class="javax.swing.JButton" binding="Form5">
+              <component id="84052" class="javax.swing.JButton" binding="heartDrawingModeButton">
                 <constraints/>
                 <properties>
                   <enabled value="true"/>
                   <maximumSize width="60" height="60"/>
                   <minimumSize width="60" height="60"/>
                   <preferredSize width="60" height="60"/>
-                  <text value="Form5"/>
+                  <text value="♥"/>
                 </properties>
               </component>
-              <component id="c7e7" class="javax.swing.JButton" binding="Form6">
+              <component id="c7e7" class="javax.swing.JButton" binding="triangleDrawingModeButton">
                 <constraints/>
                 <properties>
                   <enabled value="true"/>
                   <maximumSize width="60" height="60"/>
                   <minimumSize width="60" height="60"/>
                   <preferredSize width="60" height="60"/>
-                  <text value="Form6"/>
+                  <text value="▲"/>
                 </properties>
               </component>
             </children>

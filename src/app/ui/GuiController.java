@@ -30,8 +30,8 @@ public class GuiController extends JPanel{
     private JButton circleDrawingModeButton;
     private JButton ellipseDrawingModeButton;
     private JButton squareDrawingModeButton;
-    private JButton Form5;
-    private JButton Form6;
+    private JButton heartDrawingModeButton;
+    private JButton triangleDrawingModeButton;
     private JSpinner spinner3;
     private JSlider stroke_slider;
     private JToolBar ActionBar;
@@ -230,6 +230,40 @@ public class GuiController extends JPanel{
                         //System.out.println("dragged a rectangle!");
 
                         break;
+                    case DRAWING_TRIANGLE:
+
+                        //System.out.print("mouse dragged from ("+ mousePosition.x + "," + mousePosition.y + ") to (");
+                        //updateMousePosition(e);
+                        //System.out.println(mousePosition.x + "," + mousePosition.y + ")");
+
+
+                        Triangle triangle = (Triangle) DrawingArea.getLastShape();
+
+                        updateMousePosition(e);
+
+                        triangle.DraggedUpdateShapeDimensions(FirstMousePressPosition,e,DrawingArea.getWidth(),DrawingArea.getHeight(),strokeCurrentWidth);
+
+                        DrawingArea.repaint();
+                        //System.out.println("dragged a rectangle!");
+
+                        break;
+                    case DRAWING_HEART:
+
+                        //System.out.print("mouse dragged from ("+ mousePosition.x + "," + mousePosition.y + ") to (");
+                        //updateMousePosition(e);
+                        //System.out.println(mousePosition.x + "," + mousePosition.y + ")");
+
+
+                        Heart heart = (Heart) DrawingArea.getLastShape();
+
+                        updateMousePosition(e);
+
+                        heart.DraggedUpdateShapeDimensions(FirstMousePressPosition,e,DrawingArea.getWidth(),DrawingArea.getHeight(),strokeCurrentWidth);
+
+                        DrawingArea.repaint();
+                        //System.out.println("dragged a rectangle!");
+
+                        break;
                     case SELECTION:
                         // Handle selection mode
                         System.out.println("selection mode!!");
@@ -329,6 +363,30 @@ public class GuiController extends JPanel{
 
 
                         DrawingArea.addShape(circle);
+                        break;
+                    case DRAWING_HEART:
+                        // drawing mode
+                        System.out.println("Heart drawing mode!!");
+                        updateMousePosition(e);
+
+                        Heart heart = new Heart(mousePosition,1,1);
+
+                        heart.draw(gg);
+
+
+                        DrawingArea.addShape(heart);
+                        break;
+                    case DRAWING_TRIANGLE:
+                        // drawing mode
+                        System.out.println("Triangle drawing mode!!");
+                        updateMousePosition(e);
+
+                        Triangle triangle = new Triangle(mousePosition,1,1);
+
+                        triangle.draw(gg);
+
+
+                        DrawingArea.addShape(triangle);
                         break;
                     case SELECTION:
                         // Handle selection mode
@@ -455,6 +513,17 @@ public class GuiController extends JPanel{
                         System.out.println(DrawingArea.getShapesList());
                         //setCurrentMode(MouseMode.SELECTION);
                         break;
+                    case DRAWING_TRIANGLE:
+
+                        Triangle triangle = (Triangle) DrawingArea.getLastShape();
+
+                        updateMousePosition(e);
+
+                        triangle.updateShapeDimensions(e,DrawingArea.getWidth(),DrawingArea.getHeight(),strokeCurrentWidth);
+
+                        DrawingArea.repaint();
+                        //setCurrentMode(MouseMode.SELECTION);
+                        break;
                     case SELECTION:
                         // Handle selection mode
                         //System.out.println("selection mode!!");
@@ -552,6 +621,30 @@ public class GuiController extends JPanel{
                 System.out.println("set mode to square drawing");
             }
         });
+        heartDrawingModeButton.addActionListener(new ActionListener() {
+            /**
+             * @param e the event to be processed
+             */
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                resetOperatorVariables();
+                setCurrentMode(MouseMode.DRAWING_HEART);
+                enableAllDrawingButtonsExcept(heartDrawingModeButton);
+                System.out.println("set mode to heart drawing");
+            }
+        });
+        triangleDrawingModeButton.addActionListener(new ActionListener() {
+            /**
+             * @param e the event to be processed
+             */
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                resetOperatorVariables();
+                setCurrentMode(MouseMode.DRAWING_TRIANGLE);
+                enableAllDrawingButtonsExcept(triangleDrawingModeButton);
+                System.out.println("set mode to heart drawing");
+            }
+        });
         intersectionOperatorButton.addActionListener(new ActionListener() {
             /**
              * @param e the event to be processed
@@ -595,6 +688,8 @@ public class GuiController extends JPanel{
         circleDrawingModeButton.setEnabled(true);
         ellipseDrawingModeButton.setEnabled(true);
         squareDrawingModeButton.setEnabled(true);
+        heartDrawingModeButton.setEnabled(true);
+        triangleDrawingModeButton.setEnabled(true);
         intersectionOperatorButton.setEnabled(true);
         unionOperatorButton.setEnabled(true);
         xorOperatorButton.setEnabled(true);
