@@ -108,7 +108,9 @@ public class GuiController extends JPanel implements Serializable{
             return ((Heart) shape).getShapeColor();
         } else if (shape instanceof Triangle) {
             return ((Triangle) shape).getShapeColor();
-        } else {
+        } else if (shape instanceof Area) {
+            return ((Area) shape).getShapeColor();
+        }else {
             System.out.println("cant grab shape color!!");
             return null; // or some other default value
         }
@@ -537,7 +539,7 @@ public class GuiController extends JPanel implements Serializable{
                         //setCurrentMode(MouseMode.SELECTION);
                         break;
 
-                    case XOR: // braces to creeate a new scope to avoid getting compiler errors due to same var names with union case
+                    case XOR:
                         updateMousePosition(e);
 
                         shapeSelectionWorkflow(e.getPoint());

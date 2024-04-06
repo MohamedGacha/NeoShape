@@ -65,6 +65,13 @@ public class Area extends java.awt.geom.Area implements CanvasTools, Serializabl
     }
 
 
+    @Override
+    public String toString() {
+        return "Area{" +
+                "shapeColor=" + shapeColor +
+                '}';
+    }
+
     /**
      * @return
      */
