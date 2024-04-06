@@ -12,8 +12,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ListIterator;
 import javax.swing.SwingUtilities;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
 public class GuiController extends JPanel{
 
@@ -25,26 +23,25 @@ public class GuiController extends JPanel{
     private JButton ZoomIn;
     private JSpinner spinner1;
     private JButton ZoomOut;
-    private JButton Mouse;
+    private JButton selectionModeButton;
     private JButton rectangleDrawingModeButton;
     private JButton circleDrawingModeButton;
     private JButton ellipseDrawingModeButton;
     private JButton squareDrawingModeButton;
     private JButton heartDrawingModeButton;
     private JButton triangleDrawingModeButton;
-    private JSpinner spinner3;
-    private JSlider stroke_slider;
+    private JFormattedTextField colorPicker;
     private JToolBar ActionBar;
     private JButton unionOperatorButton;
     private JButton intersectionOperatorButton;
     private JButton xorOperatorButton;
     private JPanel MainPanel;
-    private JCheckBox dashed_checkbox;
-    private JRadioButton radioButton1;
 
     private JPanelWrapper DrawingArea;
     private JPanel RightToolboxPanel;
     private JButton substractOperatorButton;
+    private JLabel Color;
+    private JButton colorSetButton;
 
     //int mouseDragdX, mouseDragdY;
     private Point mousePosition; // relative to DrawingArea
@@ -539,21 +536,6 @@ public class GuiController extends JPanel{
 
 
         });
-        // listener for slider when value is changed, need to change the stroke
-        stroke_slider.addChangeListener(new ChangeListener() {
-            /**
-             * @param e a ChangeEvent object
-             */
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                if (!stroke_slider.getValueIsAdjusting()) {
-                    strokeCurrentWidth = (int)stroke_slider.getValue();
-                }
-                System.out.println("changed stroke slider");
-                // update the stroke
-                //updateCurrentStroke();
-            }
-        });
 
         unionOperatorButton.addActionListener(new ActionListener() {
             /**
@@ -681,6 +663,19 @@ public class GuiController extends JPanel{
                 System.out.println("set mode to XOR operation");
             }
         });
+
+        selectionModeButton.addActionListener(new ActionListener() {
+            /**
+             * @param e the event to be processed
+             */
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                resetOperatorVariables();
+                CurrentMode = MouseMode.SELECTION;
+                enableAllDrawingButtonsExcept(selectionModeButton);
+                System.out.println("set mode to SELECTION");
+            }
+        });
     }
 
     private void enableAllDrawingButtonsExcept(JButton buttonToExclude) {
@@ -690,6 +685,7 @@ public class GuiController extends JPanel{
         squareDrawingModeButton.setEnabled(true);
         heartDrawingModeButton.setEnabled(true);
         triangleDrawingModeButton.setEnabled(true);
+        selectionModeButton.setEnabled(true);
         intersectionOperatorButton.setEnabled(true);
         unionOperatorButton.setEnabled(true);
         xorOperatorButton.setEnabled(true);

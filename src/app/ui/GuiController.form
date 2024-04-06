@@ -3,14 +3,14 @@
   <grid id="27dc6" binding="MainPanel" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
     <margin top="0" left="0" bottom="0" right="0"/>
     <constraints>
-      <xy x="20" y="20" width="720" height="480"/>
+      <xy x="20" y="20" width="900" height="620"/>
     </constraints>
     <properties>
       <focusCycleRoot value="false"/>
       <inheritsPopupMenu value="false"/>
       <maximumSize width="-1" height="-1"/>
-      <minimumSize width="720" height="480"/>
-      <preferredSize width="800" height="480"/>
+      <minimumSize width="900" height="620"/>
+      <preferredSize width="1200" height="620"/>
     </properties>
     <border type="none"/>
     <children>
@@ -148,7 +148,7 @@
             </clientProperties>
             <border type="none"/>
             <children>
-              <component id="c1633" class="javax.swing.JButton" binding="Mouse">
+              <component id="c1633" class="javax.swing.JButton" binding="selectionModeButton">
                 <constraints/>
                 <properties>
                   <enabled value="false"/>
@@ -157,11 +157,114 @@
                   <minimumSize width="60" height="60"/>
                   <opaque value="true"/>
                   <preferredSize width="60" height="60"/>
-                  <text value="Mouse"/>
+                  <text value="mouse"/>
                 </properties>
               </component>
             </children>
           </toolbar>
+          <toolbar id="b2089" binding="ActionBar">
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="1" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="-1" height="20"/>
+              </grid>
+            </constraints>
+            <properties>
+              <floatable value="false"/>
+            </properties>
+            <border type="none"/>
+            <children>
+              <component id="682ae" class="javax.swing.JButton" binding="unionOperatorButton">
+                <constraints/>
+                <properties>
+                  <enabled value="true"/>
+                  <maximumSize width="60" height="60"/>
+                  <minimumSize width="60" height="60"/>
+                  <preferredSize width="60" height="60"/>
+                  <text value="U"/>
+                </properties>
+              </component>
+              <component id="f3551" class="javax.swing.JButton" binding="intersectionOperatorButton">
+                <constraints/>
+                <properties>
+                  <enabled value="true"/>
+                  <maximumSize width="60" height="60"/>
+                  <minimumSize width="60" height="60"/>
+                  <preferredSize width="60" height="60"/>
+                  <text value="∩"/>
+                </properties>
+              </component>
+              <component id="2b17e" class="javax.swing.JButton" binding="substractOperatorButton">
+                <constraints/>
+                <properties>
+                  <enabled value="true"/>
+                  <maximumSize width="60" height="60"/>
+                  <minimumSize width="60" height="60"/>
+                  <preferredSize width="60" height="60"/>
+                  <text value="-"/>
+                </properties>
+              </component>
+              <component id="65f8f" class="javax.swing.JButton" binding="xorOperatorButton">
+                <constraints/>
+                <properties>
+                  <enabled value="true"/>
+                  <maximumSize width="60" height="60"/>
+                  <minimumSize width="60" height="60"/>
+                  <preferredSize width="60" height="60"/>
+                  <text value="⊕"/>
+                </properties>
+              </component>
+              <hspacer id="b0b4b">
+                <constraints/>
+              </hspacer>
+              <component id="595ac" class="javax.swing.JButton" binding="ZoomIn">
+                <constraints/>
+                <properties>
+                  <enabled value="true"/>
+                  <maximumSize width="60" height="60"/>
+                  <minimumSize width="60" height="60"/>
+                  <preferredSize width="60" height="60"/>
+                  <text value="+"/>
+                </properties>
+              </component>
+              <component id="e7dac" class="javax.swing.JSpinner" binding="spinner1" default-binding="true">
+                <constraints/>
+                <properties>
+                  <editor value=""/>
+                  <maximumSize width="60" height="60"/>
+                  <minimumSize width="60" height="60"/>
+                  <preferredSize width="60" height="60"/>
+                </properties>
+              </component>
+              <component id="e2696" class="javax.swing.JButton" binding="ZoomOut">
+                <constraints/>
+                <properties>
+                  <enabled value="true"/>
+                  <maximumSize width="60" height="60"/>
+                  <minimumSize width="60" height="60"/>
+                  <preferredSize width="60" height="60"/>
+                  <text value="-"/>
+                </properties>
+              </component>
+            </children>
+          </toolbar>
+          <grid id="ff616" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+            <margin top="0" left="0" bottom="0" right="0"/>
+            <constraints>
+              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="1572a" class="app.JPanelWrapper" binding="DrawingArea">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="true">
+                    <minimum-size width="500" height="500"/>
+                  </grid>
+                </constraints>
+                <properties/>
+              </component>
+            </children>
+          </grid>
           <toolbar id="a891b">
             <constraints>
               <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false">
@@ -237,7 +340,7 @@
               </component>
             </children>
           </toolbar>
-          <grid id="1fe15" binding="RightToolboxPanel" layout-manager="GridLayoutManager" row-count="7" column-count="2" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="1fe15" binding="RightToolboxPanel" layout-manager="GridLayoutManager" row-count="5" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
               <grid row="1" column="2" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -245,178 +348,37 @@
             <properties/>
             <border type="none"/>
             <children>
-              <component id="b9ffd" class="javax.swing.JButton">
+              <component id="b9ffd" class="javax.swing.JButton" binding="colorSetButton">
                 <constraints>
-                  <grid row="1" column="0" row-span="3" col-span="2" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <grid row="0" column="0" row-span="3" col-span="4" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="Buttoncs"/>
+                  <actionCommand value="Buttoncs"/>
+                  <label value="Set Color"/>
+                  <text value="Set Color"/>
                 </properties>
               </component>
-              <component id="9d847" class="javax.swing.JSlider" binding="stroke_slider">
+              <component id="1571c" class="javax.swing.JFormattedTextField" binding="colorPicker">
                 <constraints>
-                  <grid row="5" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="2" indent="0" use-parent-layout="false">
-                    <minimum-size width="100" height="-1"/>
-                    <preferred-size width="100" height="-1"/>
-                    <maximum-size width="100" height="-1"/>
-                  </grid>
-                </constraints>
-                <properties>
-                  <maximum value="10"/>
-                  <minimum value="1"/>
-                  <orientation value="0"/>
-                </properties>
-                <clientProperties>
-                  <JSlider.isFilled class="java.lang.Boolean" value="true"/>
-                  <Slider.paintThumbArrowShape class="java.lang.Boolean" value="true"/>
-                </clientProperties>
-              </component>
-              <component id="1571c" class="javax.swing.JSpinner" binding="spinner3" default-binding="true">
-                <constraints>
-                  <grid row="5" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                  <grid row="3" column="3" row-span="1" col-span="1" vsize-policy="3" hsize-policy="7" anchor="8" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties/>
               </component>
+              <component id="cf144" class="javax.swing.JLabel" binding="Color">
+                <constraints>
+                  <grid row="3" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Color"/>
+                </properties>
+              </component>
               <vspacer id="dc822">
                 <constraints>
-                  <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                  <grid row="4" column="0" row-span="1" col-span="4" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
                 </constraints>
               </vspacer>
-              <vspacer id="5cd11">
-                <constraints>
-                  <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="1" anchor="1" fill="0" indent="0" use-parent-layout="false">
-                    <minimum-size width="-1" height="30"/>
-                    <preferred-size width="-1" height="30"/>
-                    <maximum-size width="-1" height="30"/>
-                  </grid>
-                </constraints>
-              </vspacer>
-              <vspacer id="b9ecd">
-                <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="1" anchor="1" fill="1" indent="0" use-parent-layout="false">
-                    <minimum-size width="-1" height="50"/>
-                    <preferred-size width="-1" height="50"/>
-                    <maximum-size width="-1" height="50"/>
-                  </grid>
-                </constraints>
-              </vspacer>
-              <component id="88148" class="javax.swing.JCheckBox" binding="dashed_checkbox">
-                <constraints>
-                  <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="Dashed"/>
-                </properties>
-              </component>
-              <component id="aaf51" class="javax.swing.JRadioButton" binding="radioButton1" default-binding="true">
-                <constraints>
-                  <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="RadioButton"/>
-                </properties>
-              </component>
             </children>
           </grid>
-          <component id="e2696" class="javax.swing.JButton" binding="ZoomOut">
-            <constraints>
-              <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <enabled value="true"/>
-              <maximumSize width="60" height="60"/>
-              <minimumSize width="60" height="60"/>
-              <preferredSize width="60" height="60"/>
-              <text value="-"/>
-            </properties>
-          </component>
-          <component id="e7dac" class="javax.swing.JSpinner" binding="spinner1" default-binding="true">
-            <constraints>
-              <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <editor value=""/>
-              <maximumSize width="60" height="60"/>
-              <minimumSize width="60" height="60"/>
-              <preferredSize width="60" height="60"/>
-            </properties>
-          </component>
-          <component id="595ac" class="javax.swing.JButton" binding="ZoomIn">
-            <constraints>
-              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-            </constraints>
-            <properties>
-              <enabled value="true"/>
-              <maximumSize width="60" height="60"/>
-              <minimumSize width="60" height="60"/>
-              <preferredSize width="60" height="60"/>
-              <text value="+"/>
-            </properties>
-          </component>
-          <toolbar id="b2089" binding="ActionBar">
-            <constraints>
-              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="1" fill="1" indent="0" use-parent-layout="false">
-                <preferred-size width="-1" height="20"/>
-              </grid>
-            </constraints>
-            <properties>
-              <floatable value="false"/>
-            </properties>
-            <border type="none"/>
-            <children>
-              <component id="682ae" class="javax.swing.JButton" binding="unionOperatorButton">
-                <constraints/>
-                <properties>
-                  <enabled value="true"/>
-                  <maximumSize width="60" height="60"/>
-                  <minimumSize width="60" height="60"/>
-                  <preferredSize width="60" height="60"/>
-                  <text value="U"/>
-                </properties>
-              </component>
-              <component id="f3551" class="javax.swing.JButton" binding="intersectionOperatorButton">
-                <constraints/>
-                <properties>
-                  <enabled value="true"/>
-                  <maximumSize width="60" height="60"/>
-                  <minimumSize width="60" height="60"/>
-                  <preferredSize width="60" height="60"/>
-                  <text value="∩"/>
-                </properties>
-              </component>
-              <component id="2b17e" class="javax.swing.JButton" binding="substractOperatorButton">
-                <constraints/>
-                <properties>
-                  <enabled value="true"/>
-                  <maximumSize width="60" height="60"/>
-                  <minimumSize width="60" height="60"/>
-                  <preferredSize width="60" height="60"/>
-                  <text value="-"/>
-                </properties>
-              </component>
-              <component id="65f8f" class="javax.swing.JButton" binding="xorOperatorButton">
-                <constraints/>
-                <properties>
-                  <enabled value="true"/>
-                  <maximumSize width="60" height="60"/>
-                  <minimumSize width="60" height="60"/>
-                  <preferredSize width="60" height="60"/>
-                  <text value="⊕"/>
-                </properties>
-              </component>
-              <hspacer id="b0b4b">
-                <constraints/>
-              </hspacer>
-            </children>
-          </toolbar>
-          <component id="1572a" class="app.JPanelWrapper" binding="DrawingArea">
-            <constraints>
-              <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="1" fill="0" indent="0" use-parent-layout="true">
-                <minimum-size width="500" height="500"/>
-              </grid>
-            </constraints>
-            <properties/>
-          </component>
         </children>
       </grid>
     </children>
