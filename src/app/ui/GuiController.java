@@ -14,8 +14,17 @@ import java.util.ListIterator;
 import javax.swing.SwingUtilities;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.StyledDocument;
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.util.List;
+import java.io.*;
 
-public class GuiController extends JPanel{
+public class GuiController extends JPanel implements Serializable{
 
     private JButton New;
     private JButton Open;
@@ -213,8 +222,28 @@ public class GuiController extends JPanel{
 
     public GuiController() {
 
+        Open.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setDialogTitle("Open File");
+                fileChooser.setFileFilter(new FileNameExtensionFilter("Shape Files (*.shp)", "shp"));
 
+                int userSelection = fileChooser.showOpenDialog(GuiController.this);
 
+                if (userSelection == JFileChooser.APPROVE_OPTION) {
+                    String selectedFilePath = fileChooser.getSelectedFile().getAbsolutePath();
+                    loadShapesFromFile(selectedFilePath);
+                }
+            }
+        });
+
+        Save.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                saveToFile();
+            }
+        });
 
         DrawingArea.addMouseMotionListener(new MouseAdapter() {
             @Override
@@ -751,6 +780,14 @@ public class GuiController extends JPanel{
             }
         });
 
+        New.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DrawingArea.clearShapes(); // Clear the DrawingArea
+                DrawingArea.repaint(); // Repaint the panel to reflect the changes
+            }
+        });
+
         redSpinner.setModel(new SpinnerNumberModel(255,0,255,1));
         greenSpinner.setModel(new SpinnerNumberModel(255,0,255,1));
         blueSpinner.setModel(new SpinnerNumberModel(255,0,255,1));
@@ -794,7 +831,7 @@ public class GuiController extends JPanel{
     }
 
     public static void init() {
-        JFrame frame = new JFrame("GUI");
+        JFrame frame = new JFrame("NeoShape");
         frame.setContentPane(new GuiController().MainPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
@@ -814,4 +851,43 @@ public class GuiController extends JPanel{
         this.currentColor = currentColor;
         colorSquarePanel.setBackground(currentColor);
     }
+
+    public void saveShapesToFile(String filename) {
+        try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(filename))) {
+            // Écrire la liste des formes dans le fichier
+            outputStream.writeObject(DrawingArea.getShapesList());
+            System.out.println("Formes sauvegardées dans " + filename);
+        } catch (IOException e) {
+            System.err.println("Erreur lors de la sauvegarde des formes : " + e.getMessage());
+        }
+    }
+
+    public void loadShapesFromFile(String filename) {
+        try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(filename))) {
+            // Read the list of shapes from the file
+            List<CanvasTools> shapes = (List<CanvasTools>) inputStream.readObject();
+            DrawingArea.getShapesList().clear(); // Clear existing shapes
+            DrawingArea.getShapesList().addAll(shapes); // Add shapes from the file
+            System.out.println("Shapes loaded from " + filename);
+            DrawingArea.repaint(); // Repaint the panel to show the loaded shapes
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println("Error loading shapes: " + e.getMessage());
+        }
+    }
+    private void saveToFile() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Save Shapes");
+        fileChooser.setFileFilter(new FileNameExtensionFilter("Shape Files", "shp"));
+        int userSelection = fileChooser.showSaveDialog(MainPanel);
+
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            String filename = fileChooser.getSelectedFile().getAbsolutePath();
+            if (!filename.endsWith(".shp")) {
+                filename += ".shp"; // Ajoute l'extension .shp si elle n'est pas déjà présente
+            }
+            saveShapesToFile(filename);
+        }
+    }
+
+
 }

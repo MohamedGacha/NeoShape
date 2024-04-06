@@ -45,6 +45,10 @@ public class JPanelWrapper extends JPanel {
     }
 
 
+    public void clearShapes() {
+        ShapesList.clear(); // Clear all shapes from the ShapesList
+    }
+
     @Override
     public void paint(Graphics g) {
         super.paint(g);

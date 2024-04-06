@@ -2,13 +2,14 @@ package app.shapes;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.io.Serializable;
 
 
 // this class is created especially for the output of operations that create objects with empty space between them
 // i thought of 2 implementations: either modify the rectangle's class draw method behaviour to draw only the shapes needed and keep everything else empty
 // or have the output of operations a new class that does that; this will be that class, its the same as the 1st method just with a new class,
 // i will try to implement the 1st method, if not successful i ll be using this class
-public class Area extends java.awt.geom.Area implements CanvasTools{
+public class Area extends java.awt.geom.Area implements CanvasTools, Serializable {
 
     protected Color shapeColor;
 
