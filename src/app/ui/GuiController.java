@@ -46,6 +46,10 @@ public class GuiController extends JPanel{
     private JSpinner redSpinner;
     private JSpinner greenSpinner;
     private JSpinner blueSpinner;
+    private JLabel redLabel;
+    private JLabel blueLabel;
+    private JLabel greenLabel;
+    private JLabel colorLabel;
     private JTabbedPane colorTabbedPane;
     private JColorChooser colorChooser1;
 
