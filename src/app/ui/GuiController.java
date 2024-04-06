@@ -22,7 +22,10 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.List;
-import java.io.*;
+import java.io.*;import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+
 
 public class GuiController extends JPanel implements Serializable{
 
@@ -235,6 +238,20 @@ public class GuiController extends JPanel implements Serializable{
                     String selectedFilePath = fileChooser.getSelectedFile().getAbsolutePath();
                     loadShapesFromFile(selectedFilePath);
                 }
+            }
+        });
+
+        // Add action listener to the Server button
+        Server.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Prompt user to enter IP address and port
+                String ipAddress = JOptionPane.showInputDialog(null, "Enter IP Address:");
+                String portString = JOptionPane.showInputDialog(null, "Enter Port Number:");
+                int port = Integer.parseInt(portString);
+
+                // Start the server
+                startServer(ipAddress, port);
             }
         });
 
@@ -886,6 +903,16 @@ public class GuiController extends JPanel implements Serializable{
                 filename += ".shp"; // Ajoute l'extension .shp si elle n'est pas déjà présente
             }
             saveShapesToFile(filename);
+        }
+    }
+    private void startServer(String ipAddress, int port) {
+        try {
+            // Create a ServerSocket object bound to the provided IP address and port
+            // Start listening for incoming connections, handle client connections in a separate thread
+            // Implementation of this method is provided in the previous answer
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error starting server: " + e.getMessage(), "Server Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
