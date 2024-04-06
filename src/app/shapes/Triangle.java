@@ -6,17 +6,17 @@ import java.awt.geom.Path2D;
 
 public class Triangle extends Path2D.Double implements CanvasTools {
 
-    private Color fillColor; // default color
+    protected Color shapeColor;
 
-    public void setFillColor(Color c) {
-        this.fillColor = c;
+    public void setShapeColor(Color shapeColor) {
+        this.shapeColor = shapeColor;
     }
 
-    public Color getFillColor() {
-        return fillColor;
+    public Color getShapeColor() {
+        return this.shapeColor;
     }
 
-    public Triangle(Point startPoint, double width, double height) {
+    public Triangle(Point startPoint, double width, double height,Color currentColor) {
         double x = startPoint.getX();
         double y = startPoint.getY();
 
@@ -37,10 +37,12 @@ public class Triangle extends Path2D.Double implements CanvasTools {
 
         // Close the path to complete the shape
         closePath();
+        setShapeColor(currentColor);
     }
 
     @Override
     public void draw(Graphics2D g2d) {
+        g2d.setColor(shapeColor);
         g2d.fill(this);
     }
 

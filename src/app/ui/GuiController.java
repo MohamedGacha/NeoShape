@@ -12,6 +12,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ListIterator;
 import javax.swing.SwingUtilities;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.StyledDocument;
 
 public class GuiController extends JPanel{
 
@@ -20,9 +22,7 @@ public class GuiController extends JPanel{
     private JButton Save;
     private JButton Server;
     private JButton Exit;
-    private JButton ZoomIn;
     private JSpinner spinner1;
-    private JButton ZoomOut;
     private JButton selectionModeButton;
     private JButton rectangleDrawingModeButton;
     private JButton circleDrawingModeButton;
@@ -30,7 +30,7 @@ public class GuiController extends JPanel{
     private JButton squareDrawingModeButton;
     private JButton heartDrawingModeButton;
     private JButton triangleDrawingModeButton;
-    private JFormattedTextField colorPicker;
+    private JFormattedTextField redColorFormattedTF;
     private JToolBar ActionBar;
     private JButton unionOperatorButton;
     private JButton intersectionOperatorButton;
@@ -40,8 +40,14 @@ public class GuiController extends JPanel{
     private JPanelWrapper DrawingArea;
     private JPanel RightToolboxPanel;
     private JButton substractOperatorButton;
-    private JLabel Color;
     private JButton colorSetButton;
+    private JButton moreColorsButton;
+    private JPanel colorSquarePanel;
+    private JSpinner redSpinner;
+    private JSpinner greenSpinner;
+    private JSpinner blueSpinner;
+    private JTabbedPane colorTabbedPane;
+    private JColorChooser colorChooser1;
 
     //int mouseDragdX, mouseDragdY;
     private Point mousePosition; // relative to DrawingArea
@@ -59,6 +65,43 @@ public class GuiController extends JPanel{
         posOperationSecondShape = -1;
 
     }
+
+    public static Color blend(Color c0, Color c1) {
+
+        System.out.println("c0: " +c0 + " | c1: "+ c1);
+        int red = (c0.getRed() + c1.getRed())/2;
+        int green = (c0.getGreen() + c1.getGreen())/2;
+        int blue = (c0.getBlue() + c1.getBlue())/2;
+
+        return new Color(red,green,blue);
+    }
+
+    public Color getColorWrapper(int pos) {
+
+
+        CanvasTools shape = DrawingArea.getShapeAtIndex(pos);
+
+        if (shape instanceof Rectangle) {
+            System.out.println("wanted to grab color: "+ ((Rectangle) shape).getShapeColor() + " at index: "+(int)(pos));
+            return ((Rectangle) shape).getShapeColor();
+        } else if (shape instanceof Circle) {
+            return ((Circle) shape).getShapeColor();
+        } else if (shape instanceof Ellipse) {
+            return ((Ellipse) shape).getShapeColor();
+        } else if (shape instanceof Heart) {
+            return ((Heart) shape).getShapeColor();
+        } else if (shape instanceof Triangle) {
+            return ((Triangle) shape).getShapeColor();
+        } else {
+            System.out.println("cant grab shape color!!");
+            return null; // or some other default value
+        }
+    }
+
+    public static boolean isValidRGBValue(int value) {
+        return value >= 0 && value <= 255;
+    }
+
     public Area getoperationFirstArea(){
         return operationFirstArea;
     }
@@ -72,6 +115,8 @@ public class GuiController extends JPanel{
         CurrentMode = MouseMode.SELECTION; // default mode is selection mode
     }
 
+
+    private Color currentColor = Color.black; // default color when initialising
     int strokeCurrentWidth = 5;
 
 
@@ -106,18 +151,25 @@ public class GuiController extends JPanel{
         // iterator starting from end of shapes list
         ListIterator<CanvasTools> iter = DrawingArea.getShapesList().listIterator(i + 1);
 
+
+
+
         while (iter.hasPrevious()) {
             currentShape = iter.previous();
             i--;
             if (currentShape.select(mousePosition)) { // selected a shape
                 if (operationFirstArea == null) { // first shape not yet defined
-                    operationFirstArea = new Area((Shape) currentShape);
                     posOperationFirstShape = i + 1;
+
+                    operationFirstArea = new Area((Shape) currentShape,getColorWrapper(posOperationFirstShape));
                     break; // stop iterating over the loop
                 } else { // first shape already selected
                     if (currentShape != DrawingArea.getShapeAtIndex(posOperationFirstShape)) { // to avoid union and intersection on same shape
-                        operationSecondArea = new Area((Shape) currentShape);
-                        posOperationSecondShape = i + 1;
+                        posOperationSecondShape = i +1;
+                        operationSecondArea = new Area((Shape) currentShape,Color.black); // don't need to set color for second area since it will be deleted
+                        //set color to resulting shape
+                        //System.out.println("miaw checkpoint: area1 color = " + operationFirstArea.getShapeColor());
+                        operationFirstArea.setShapeColor(blend(operationFirstArea.getShapeColor(),getColorWrapper(posOperationSecondShape)));
                         break; // stop iterating over the loop
                     } else {
                         System.out.println("error: operations aren't reflexive!");
@@ -125,6 +177,7 @@ public class GuiController extends JPanel{
                 }
 
             }
+
         }
 
     }
@@ -155,6 +208,8 @@ public class GuiController extends JPanel{
 
 
     public GuiController() {
+
+
 
 
         DrawingArea.addMouseMotionListener(new MouseAdapter() {
@@ -263,7 +318,7 @@ public class GuiController extends JPanel{
                         break;
                     case SELECTION:
                         // Handle selection mode
-                        System.out.println("selection mode!!");
+                        //System.out.println("selection mode!!");
                         updateMousePosition(e);
                         break;
                     case PAN:
@@ -310,7 +365,7 @@ public class GuiController extends JPanel{
                         System.out.println("RECTANGLE drawing mode!!");
                         updateMousePosition(e);
 
-                        Rectangle r = new Rectangle(mousePosition,1,1);
+                        Rectangle r = new Rectangle(mousePosition,1,1,getCurrentColor());
 
 
 
@@ -325,7 +380,7 @@ public class GuiController extends JPanel{
                         System.out.println("SQUARE drawing mode!!");
                         updateMousePosition(e);
 
-                        Square square = new Square(mousePosition,1);
+                        Square square = new Square(mousePosition,1,getCurrentColor());
 
 
 
@@ -340,7 +395,7 @@ public class GuiController extends JPanel{
                         System.out.println("ELLIPSE drawing mode!!");
                         updateMousePosition(e);
 
-                        Ellipse eli = new Ellipse(mousePosition,1,1);
+                        Ellipse eli = new Ellipse(mousePosition,1,1,getCurrentColor());
 
 
 
@@ -354,7 +409,7 @@ public class GuiController extends JPanel{
                         System.out.println("Circle drawing mode!!");
                         updateMousePosition(e);
 
-                        Circle circle = new Circle(mousePosition,1);
+                        Circle circle = new Circle(mousePosition,1,getCurrentColor());
 
                         circle.draw(gg);
 
@@ -366,7 +421,7 @@ public class GuiController extends JPanel{
                         System.out.println("Heart drawing mode!!");
                         updateMousePosition(e);
 
-                        Heart heart = new Heart(mousePosition,1,1);
+                        Heart heart = new Heart(mousePosition,1,1,getCurrentColor());
 
                         heart.draw(gg);
 
@@ -378,7 +433,7 @@ public class GuiController extends JPanel{
                         System.out.println("Triangle drawing mode!!");
                         updateMousePosition(e);
 
-                        Triangle triangle = new Triangle(mousePosition,1,1);
+                        Triangle triangle = new Triangle(mousePosition,1,1,getCurrentColor());
 
                         triangle.draw(gg);
 
@@ -676,6 +731,47 @@ public class GuiController extends JPanel{
                 System.out.println("set mode to SELECTION");
             }
         });
+
+        moreColorsButton.addActionListener(new ActionListener() {
+            /**
+             * @param e the event to be processed
+             */
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                setCurrentColor(JColorChooser.showDialog(MainPanel, "select a coloor",java.awt.Color.BLUE,true));
+
+
+
+                //System.out.println(getCurrentColor());
+            }
+        });
+
+        redSpinner.setModel(new SpinnerNumberModel(255,0,255,1));
+        greenSpinner.setModel(new SpinnerNumberModel(255,0,255,1));
+        blueSpinner.setModel(new SpinnerNumberModel(255,0,255,1));
+
+        redSpinner.setValue(0); // default value is 0 when init
+        greenSpinner.setValue(0); // default value is 0 when init
+        blueSpinner.setValue(0); // default value is 0 when init
+
+
+        colorSetButton.addActionListener(new ActionListener() {
+            /**
+             * @param e the event to be processed
+             */
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                int red = (int) redSpinner.getValue();
+                int green = (int) greenSpinner.getValue();
+                int blue = (int) blueSpinner.getValue();
+
+                if(isValidRGBValue(red) && isValidRGBValue(green) && isValidRGBValue(blue)){
+                    setCurrentColor(new Color(red,green,blue));
+                }
+            }
+        });
     }
 
     private void enableAllDrawingButtonsExcept(JButton buttonToExclude) {
@@ -706,4 +802,12 @@ public class GuiController extends JPanel{
     }
 
 
+    public java.awt.Color getCurrentColor() {
+        return currentColor;
+    }
+
+    public void setCurrentColor(java.awt.Color currentColor) {
+        this.currentColor = currentColor;
+        colorSquarePanel.setBackground(currentColor);
+    }
 }

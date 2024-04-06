@@ -5,8 +5,8 @@ import java.awt.*;
 public class Square extends Rectangle{
 
 
-    public Square(Point upper_left_point, double edge) {
-        super(upper_left_point, edge, edge);
+    public Square(Point upper_left_point, double edge,Color currentColor) {
+        super(upper_left_point, edge, edge,currentColor);
     }
 
     @Override

@@ -10,24 +10,30 @@ public class Rectangle extends java.awt.geom.Rectangle2D.Double implements Canva
 
 
 
-    private Color fillColor; // default color
-    public void setFillColor(Color c) {
-        this.fillColor = c;
+    protected Color shapeColor;
+
+    public void setShapeColor(Color shapeColor) {
+        this.shapeColor = shapeColor;
     }
 
-    public Color getFillColor() {
-        return fillColor;
+    public Color getShapeColor() {
+        return this.shapeColor;
     }
 
 
 
 
-    public Rectangle(Point upper_left_point, double w, double h){
+    public Rectangle(Point upper_left_point, double w, double h,Color currentColor){
         super(upper_left_point.x,upper_left_point.y,w,h);
+        this.shapeColor = currentColor;
     }
 
+    @Override
+    public String toString() {
+        return super.toString() + " | color: " + this.shapeColor;
+    }
 
-    public void DraggedUpdateShapeDimensions(Point initialPressedPoint,java.awt.event.MouseEvent e,int panelWidth,int panelHeight, int strokeWidth) {
+    public void DraggedUpdateShapeDimensions(Point initialPressedPoint, java.awt.event.MouseEvent e, int panelWidth, int panelHeight, int strokeWidth) {
         // has an extra argument to handle left dragging when drawing a shape (rectagle/square)
 
         //double newupper_x,newupper_y,new_w,new_h;
@@ -55,6 +61,7 @@ public class Rectangle extends java.awt.geom.Rectangle2D.Double implements Canva
 
     @Override
     public void draw(Graphics2D g2d) {
+        g2d.setColor(shapeColor);
         g2d.fillRect((int) this.getX(), (int) this.getY(), (int) this.getWidth(), (int) this.getHeight());
         //System.out.println("drew a rectangle!!");
     }

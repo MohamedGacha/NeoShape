@@ -7,8 +7,8 @@ public class Circle extends Ellipse {
 
     private static final int MIN_DIAMETER = 4; // Minimum diameter for the circle
 
-    public Circle(Point center, double diameter) {
-        super(center, diameter, diameter); // Setting both width and height as diameter
+    public Circle(Point center, double diameter,Color currentColor) {
+        super(center, diameter, diameter,currentColor); // Setting both width and height as diameter
     }
 
 

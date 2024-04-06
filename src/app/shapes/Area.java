@@ -9,8 +9,20 @@ import java.awt.event.MouseEvent;
 // or have the output of operations a new class that does that; this will be that class, its the same as the 1st method just with a new class,
 // i will try to implement the 1st method, if not successful i ll be using this class
 public class Area extends java.awt.geom.Area implements CanvasTools{
-    public Area(Shape shape) {
+
+    protected Color shapeColor;
+
+
+    public void setShapeColor(Color shapeColor) {
+        this.shapeColor = shapeColor;
+    }
+
+    public Color getShapeColor() {
+        return this.shapeColor;
+    }
+    public Area(Shape shape, Color mixedColor) {
         super(shape);
+        this.shapeColor = mixedColor;
     }
 
     /**
@@ -18,6 +30,7 @@ public class Area extends java.awt.geom.Area implements CanvasTools{
      */
     @Override
     public void draw(Graphics2D g2d) {
+        g2d.setColor(shapeColor);
         g2d.fill(this);
         //System.out.println("drew the area!!");
     }
