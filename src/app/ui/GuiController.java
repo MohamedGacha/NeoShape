@@ -10,11 +10,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.geom.AffineTransform;
+
+import java.awt.geom.Rectangle2D;
 import java.util.ListIterator;
 import javax.swing.SwingUtilities;
-import javax.swing.text.AbstractDocument;
-import javax.swing.text.StyledDocument;
-import javax.swing.*;
+
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -62,8 +63,7 @@ public class GuiController extends JPanel implements Serializable{
     private JLabel blueLabel;
     private JLabel greenLabel;
     private JLabel colorLabel;
-    private JTabbedPane colorTabbedPane;
-    private JColorChooser colorChooser1;
+    private JButton rotateButton;
 
     //int mouseDragdX, mouseDragdY;
     private Point mousePosition; // relative to DrawingArea
@@ -84,12 +84,15 @@ public class GuiController extends JPanel implements Serializable{
 
     public static Color blend(Color c0, Color c1) {
 
-        System.out.println("c0: " +c0 + " | c1: "+ c1);
         int red = (c0.getRed() + c1.getRed())/2;
         int green = (c0.getGreen() + c1.getGreen())/2;
         int blue = (c0.getBlue() + c1.getBlue())/2;
 
         return new Color(red,green,blue);
+    }
+
+    public Area getAreaFromCanvasTools() {
+        return (Area)DrawingArea.getLastShape();
     }
 
     public Color getColorWrapper(int pos) {
@@ -98,7 +101,6 @@ public class GuiController extends JPanel implements Serializable{
         CanvasTools shape = DrawingArea.getShapeAtIndex(pos);
 
         if (shape instanceof Rectangle) {
-            System.out.println("wanted to grab color: "+ ((Rectangle) shape).getShapeColor() + " at index: "+(int)(pos));
             return ((Rectangle) shape).getShapeColor();
         } else if (shape instanceof Circle) {
             return ((Circle) shape).getShapeColor();
@@ -137,10 +139,6 @@ public class GuiController extends JPanel implements Serializable{
     private Color currentColor = Color.black; // default color when initialising
     int strokeCurrentWidth = 5;
 
-
-    private boolean DashedLineButton = false;
-
-    //private ArrayList<CanvasTools> ShapesList = new ArrayList<CanvasTools>();
 
     public void setCurrentMode(MouseMode mode) {
         this.CurrentMode = mode;
@@ -830,6 +828,75 @@ public class GuiController extends JPanel implements Serializable{
                 if(isValidRGBValue(red) && isValidRGBValue(green) && isValidRGBValue(blue)){
                     setCurrentColor(new Color(red,green,blue));
                 }
+            }
+        });
+        rotateButton.addActionListener(new ActionListener() {
+            /**
+             * @param e the event to be processed
+             */
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+
+
+
+                // shape to act upon
+                Shape lastShape = (Shape)DrawingArea.getLastShape();
+
+
+                // Create an AffineTransform for rotation
+                //AffineTransform rotation = AffineTransform.getRotateInstance(Math.PI / 2,
+                //        lastShape.getBounds2D().getCenterX(),
+                //       lastShape.getBounds2D().getCenterY());
+                //                // Apply rotation to the last shape
+//                Shape rotatedShape = rotation.createTransformedShape(lastShape);
+//                // Add the rotated shape to the DrawingArea
+//                DrawingArea.addShape(new Area(rotatedShape,Color.red));
+//                DrawingArea.repaint();
+//
+//                System.out.println("get rotated");
+
+
+
+                // for scaling:
+                // Get the bounds of the last shape
+                Rectangle2D bounds = lastShape.getBounds2D();
+
+                // Calculate the center of the shape
+                double centerX = bounds.getCenterX();
+                double centerY = bounds.getCenterY();
+
+
+                // Create an AffineTransform for scaling up
+                AffineTransform scaling = AffineTransform.getScaleInstance(2.0, 2.0);
+
+                // Translate the scaling transformation to keep the shape in place
+                Shape oddlyPlacedScaledShape = scaling.createTransformedShape(lastShape);
+                // get new shape center
+                // Get the bounds of the last shape
+                Rectangle2D new_bounds = oddlyPlacedScaledShape.getBounds2D();
+
+                // Calculate the center of the shape
+                double new_centerX = new_bounds.getCenterX();
+                double new_centerY = new_bounds.getCenterY();
+
+
+                AffineTransform centeringTransform = AffineTransform.getTranslateInstance(-Math.abs(centerX - new_centerX), -Math.abs(centerY -new_centerY));
+
+                Shape scaledShape  = centeringTransform.createTransformedShape(oddlyPlacedScaledShape);
+
+                DrawingArea.addShape(new Area(scaledShape,Color.red));
+                DrawingArea.repaint();
+
+
+                System.out.println("get scaled");
+
+
+
+
+
+
+
             }
         });
     }

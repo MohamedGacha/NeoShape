@@ -1,5 +1,6 @@
 package app;
 
+import app.shapes.Area;
 import app.shapes.CanvasTools;
 
 import javax.swing.*;
@@ -40,9 +41,21 @@ public class JPanelWrapper extends JPanel {
         return ShapesList.get(ShapesList.size()-1);
     }
 
+
+//    public int selectShape(CanvasTools s){ // selects shape and returns its position
+//        int shape_idx = ShapesList.indexOf(s);
+//        if(shape_idx != -1){ // found the shape
+//            ShapesList.get(shape_idx).select();
+//        }
+//        return shape_idx;
+//    }
+
+
     public void addShape(CanvasTools newShape) {
         ShapesList.add(newShape);
     }
+
+
 
 
     public void clearShapes() {
