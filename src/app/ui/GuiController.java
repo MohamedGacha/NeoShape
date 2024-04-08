@@ -17,15 +17,11 @@ import java.util.ListIterator;
 import javax.swing.SwingUtilities;
 
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.List;
-import java.io.*;import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
+import java.io.*;
 
 
 public class GuiController extends JPanel implements Serializable{
@@ -35,7 +31,6 @@ public class GuiController extends JPanel implements Serializable{
     private JButton Save;
     private JButton Server;
     private JButton Exit;
-    private JSpinner spinner1;
     private JButton selectionModeButton;
     private JButton rectangleDrawingModeButton;
     private JButton circleDrawingModeButton;
@@ -64,6 +59,9 @@ public class GuiController extends JPanel implements Serializable{
     private JLabel greenLabel;
     private JLabel colorLabel;
     private JButton rotateButton;
+    private JSpinner angleSpinner;
+    private JButton setAngle;
+    private JLabel roatationLabel;
 
     //int mouseDragdX, mouseDragdY;
     private Point mousePosition; // relative to DrawingArea

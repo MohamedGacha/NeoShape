@@ -323,7 +323,7 @@
               </component>
             </children>
           </toolbar>
-          <grid id="1fe15" binding="RightToolboxPanel" layout-manager="GridLayoutManager" row-count="19" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+          <grid id="1fe15" binding="RightToolboxPanel" layout-manager="GridLayoutManager" row-count="22" column-count="4" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
             <margin top="0" left="0" bottom="0" right="0"/>
             <constraints>
               <grid row="1" column="2" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -331,10 +331,10 @@
             <properties/>
             <border type="none"/>
             <children>
-              <grid id="36044" layout-manager="GridLayoutManager" row-count="4" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+              <grid id="36044" layout-manager="GridLayoutManager" row-count="5" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                 <margin top="0" left="0" bottom="0" right="0"/>
                 <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                  <grid row="0" column="0" row-span="1" col-span="4" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <focusCycleRoot value="false"/>
@@ -343,7 +343,7 @@
                 <children>
                   <component id="c7169" class="javax.swing.JLabel" binding="redLabel">
                     <constraints>
-                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
                       <horizontalAlignment value="0"/>
@@ -356,7 +356,7 @@
                   </component>
                   <component id="51dd2" class="javax.swing.JLabel" binding="greenLabel">
                     <constraints>
-                      <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                      <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
                       <horizontalAlignment value="0"/>
@@ -366,7 +366,7 @@
                   </component>
                   <component id="841a2" class="javax.swing.JLabel" binding="blueLabel">
                     <constraints>
-                      <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="4" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                      <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="4" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
                       <horizontalAlignment value="0"/>
@@ -377,7 +377,7 @@
                   </component>
                   <component id="3d30" class="javax.swing.JSpinner" binding="redSpinner">
                     <constraints>
-                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                      <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
                         <preferred-size width="-1" height="10"/>
                         <maximum-size width="-1" height="30"/>
                       </grid>
@@ -391,7 +391,7 @@
                   </component>
                   <component id="aaa4c" class="javax.swing.JSpinner" binding="blueSpinner">
                     <constraints>
-                      <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                      <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
                         <minimum-size width="-1" height="60"/>
                         <preferred-size width="-1" height="30"/>
                         <maximum-size width="-1" height="30"/>
@@ -406,7 +406,7 @@
                   </component>
                   <component id="6bfde" class="javax.swing.JSpinner" binding="greenSpinner">
                     <constraints>
-                      <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
+                      <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false">
                         <minimum-size width="-1" height="30"/>
                         <preferred-size width="-1" height="30"/>
                         <maximum-size width="-1" height="30"/>
@@ -421,7 +421,7 @@
                   </component>
                   <component id="b9ffd" class="javax.swing.JButton" binding="colorSetButton">
                     <constraints>
-                      <grid row="2" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                      <grid row="3" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
                       <actionCommand value="Buttoncs"/>
@@ -433,7 +433,7 @@
                   <grid id="8368e" binding="colorSquarePanel" layout-manager="GridLayoutManager" row-count="1" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
                     <margin top="0" left="0" bottom="0" right="0"/>
                     <constraints>
-                      <grid row="3" column="1" row-span="1" col-span="2" vsize-policy="3" hsize-policy="7" anchor="0" fill="1" indent="0" use-parent-layout="false">
+                      <grid row="4" column="1" row-span="1" col-span="2" vsize-policy="3" hsize-policy="7" anchor="0" fill="1" indent="0" use-parent-layout="false">
                         <minimum-size width="20" height="20"/>
                       </grid>
                     </constraints>
@@ -448,7 +448,7 @@
                   </grid>
                   <component id="4bae4" class="javax.swing.JLabel" binding="colorLabel">
                     <constraints>
-                      <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                      <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
                       <horizontalAlignment value="4"/>
@@ -456,34 +456,75 @@
                       <text value="Color:"/>
                     </properties>
                   </component>
+                  <component id="a510a" class="javax.swing.JLabel">
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties>
+                      <horizontalAlignment value="0"/>
+                      <horizontalTextPosition value="0"/>
+                      <text value="Color settings"/>
+                    </properties>
+                  </component>
                 </children>
               </grid>
               <vspacer id="591ec">
                 <constraints>
-                  <grid row="2" column="0" row-span="17" col-span="3" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+                  <grid row="5" column="0" row-span="17" col-span="4" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
                 </constraints>
               </vspacer>
               <component id="32f4" class="javax.swing.JButton" binding="moreColorsButton" default-binding="true">
                 <constraints>
-                  <grid row="1" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <grid row="1" column="0" row-span="1" col-span="4" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="More colors"/>
                 </properties>
               </component>
+              <component id="eefaf" class="javax.swing.JButton" binding="setAngle">
+                <constraints>
+                  <grid row="4" column="0" row-span="1" col-span="4" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="Rotate"/>
+                </properties>
+              </component>
+              <component id="688b5" class="javax.swing.JLabel" binding="roatationLabel">
+                <constraints>
+                  <grid row="3" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <horizontalAlignment value="4"/>
+                  <horizontalTextPosition value="4"/>
+                  <text value="Rotation:"/>
+                </properties>
+              </component>
+              <component id="90b15" class="javax.swing.JSpinner" binding="angleSpinner">
+                <constraints>
+                  <grid row="3" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties/>
+              </component>
+              <component id="b9ca0" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="2" column="0" row-span="1" col-span="4" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <horizontalAlignment value="0"/>
+                  <horizontalTextPosition value="0"/>
+                  <text value="Rotation settings"/>
+                </properties>
+              </component>
             </children>
           </grid>
-          <component id="e7dac" class="javax.swing.JSpinner" binding="spinner1" default-binding="true">
+          <component id="88417" class="javax.swing.JLabel">
             <constraints>
-              <grid row="0" column="2" row-span="1" col-span="3" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+              <grid row="0" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <editor value=""/>
-              <inheritsPopupMenu value="false"/>
-              <maximumSize width="60" height="60"/>
-              <minimumSize width="60" height="60"/>
-              <opaque value="true"/>
-              <preferredSize width="60" height="60"/>
+              <horizontalAlignment value="0"/>
+              <horizontalTextPosition value="0"/>
+              <text value="Settings"/>
             </properties>
           </component>
         </children>
