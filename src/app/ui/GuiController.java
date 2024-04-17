@@ -58,7 +58,7 @@ public class GuiController extends JPanel implements Serializable{
     private JLabel blueLabel;
     private JLabel greenLabel;
     private JLabel colorLabel;
-    private JButton rotateButton;
+    private JButton resizeButton;
     private JSpinner angleSpinner;
     private JButton setAngle;
     private JLabel roatationLabel;
@@ -66,13 +66,19 @@ public class GuiController extends JPanel implements Serializable{
     //int mouseDragdX, mouseDragdY;
     private Point mousePosition; // relative to DrawingArea
 
-    private Point FirstMousePressPosition;
+    private Point FirstMousePressPosition; // used for drag logic, saves where the user was clicking before the drag
+
+
+    private Point lastMousePosition;
+
+    private Integer[] posLastSelectedShapes; // poor attempt in trying to make a good selection algorithm for stacked shapes
 
     private Area operationFirstArea = null,operationSecondArea = null;
 
     private int posOperationFirstShape = -1,posOperationSecondShape = -1; // position of first and second shape for operations
 
     public void resetOperatorVariables(){ // needs to be called whenever mode is changed
+        DrawingArea.setPosCurrentlySelectedShape(-1);
         operationFirstArea = null;
         operationSecondArea = null;
         posOperationFirstShape = -1;
@@ -158,8 +164,8 @@ public class GuiController extends JPanel implements Serializable{
     }
 
 
-    private void shapeSelectionWorkflow(Point mousePosition) {
-
+    private void shapeSelectionWorkflow(Point mousePosition) { // for operations
+        //TODO change this to take into account poscurrentlyselectedshape
         CanvasTools currentShape;
         int i = DrawingArea.getNumberOfShapes() - 1;
         // iterator starting from end of shapes list
@@ -216,7 +222,28 @@ public class GuiController extends JPanel implements Serializable{
 
                 // reset variables
                 resetOperatorVariables();
+                // goto selection mode
+                selectionModeButton.doClick();
             }
+    }
+
+    private void shapeSelection(Point mousePosition){ // for resize + rotation
+            int iter = DrawingArea.getNumberOfShapes() - 1;
+            // iterator starting from end of shapes list
+
+
+            while (iter != -1) {
+
+                System.out.println("looping, curreent index: " + iter);
+                if (DrawingArea.getShapeAtIndex(iter).select(mousePosition)) { // selection logic here, TODO use the lastselectedshapes array
+                    //TODO draw rectangle on path object to signal that it has been selected
+                    DrawingArea.setPosCurrentlySelectedShape(iter);
+                    break;
+                }
+                iter--;
+
+            }
+
     }
 
 
@@ -367,12 +394,37 @@ public class GuiController extends JPanel implements Serializable{
                     case SELECTION:
                         // Handle selection mode
                         //System.out.println("selection mode!!");
-                        updateMousePosition(e);
+
+
+                        if (DrawingArea.getPosCurrentlySelectedShape() != -1) { // a shape is already selected
+                            // calculate difference
+                            double dx = e.getX() - mousePosition.getX();
+                            double dy = e.getY() - mousePosition.getY();
+
+
+
+                            // move the shape, TODO make this process a fucnction
+                            AffineTransform draggingTransformation = AffineTransform.getTranslateInstance(dx,dy);
+
+                            Shape newShape = draggingTransformation.createTransformedShape(
+                                    new Area(
+                                            (Shape) DrawingArea.getShapeAtIndex(DrawingArea.getPosCurrentlySelectedShape()),
+                                            getColorWrapper(DrawingArea.getPosCurrentlySelectedShape())
+                                    )
+                            );
+
+                            DrawingArea.setShapeAtIndex(new Area(newShape,getColorWrapper(DrawingArea.getPosCurrentlySelectedShape())),DrawingArea.getPosCurrentlySelectedShape());
+
+
+                            DrawingArea.repaint();
+                            updateMousePosition(e);
+                        }
+
+
+
+
                         break;
-                    case PAN:
-                        // Handle panning mode
-                        break;
-                    // Add cases for other modes
+
                 }
 
 
@@ -388,8 +440,8 @@ public class GuiController extends JPanel implements Serializable{
                 super.mouseClicked(e);
                 System.out.println("mouse clicked!");
 
-                //updateMousePosition(e);
-
+                updateMousePosition(e);
+                shapeSelection(e.getPoint());
 
 
                 // select object
@@ -492,11 +544,10 @@ public class GuiController extends JPanel implements Serializable{
                         // Handle selection mode
                         System.out.println("selection mode!!");
                         updateMousePosition(e);
+
+                        shapeSelection(e.getPoint());
                         break;
-                    case PAN:
-                        // Handle panning mode
-                        break;
-                    // Add cases for other modes
+
                 }
             }
 
@@ -628,6 +679,7 @@ public class GuiController extends JPanel implements Serializable{
                         // Handle selection mode
                         //System.out.println("selection mode!!");
                         updateMousePosition(e);
+
                         break;
                     case PAN:
                         // Handle panning mode
@@ -775,6 +827,7 @@ public class GuiController extends JPanel implements Serializable{
             public void actionPerformed(ActionEvent e) {
                 resetOperatorVariables();
                 CurrentMode = MouseMode.SELECTION;
+                DrawingArea.setPosCurrentlySelectedShape(-1) ;
                 enableAllDrawingButtonsExcept(selectionModeButton);
                 System.out.println("set mode to SELECTION");
             }
@@ -803,6 +856,9 @@ public class GuiController extends JPanel implements Serializable{
             }
         });
 
+        angleSpinner.setModel(new SpinnerNumberModel(90,0,360,1));
+        redSpinner.setValue(90); // default value is 90 when init
+
         redSpinner.setModel(new SpinnerNumberModel(255,0,255,1));
         greenSpinner.setModel(new SpinnerNumberModel(255,0,255,1));
         blueSpinner.setModel(new SpinnerNumberModel(255,0,255,1));
@@ -828,7 +884,7 @@ public class GuiController extends JPanel implements Serializable{
                 }
             }
         });
-        rotateButton.addActionListener(new ActionListener() {
+        resizeButton.addActionListener(new ActionListener() {
             /**
              * @param e the event to be processed
              */
@@ -836,23 +892,13 @@ public class GuiController extends JPanel implements Serializable{
             public void actionPerformed(ActionEvent e) {
 
 
-
+                if(getCurrentMode() == MouseMode.SELECTION && DrawingArea.getPosCurrentlySelectedShape() != -1){
 
                 // shape to act upon
-                Shape lastShape = (Shape)DrawingArea.getLastShape();
+                Shape lastShape = (Shape)DrawingArea.getShapeAtIndex(DrawingArea.getPosCurrentlySelectedShape());
 
 
-                // Create an AffineTransform for rotation
-                //AffineTransform rotation = AffineTransform.getRotateInstance(Math.PI / 2,
-                //        lastShape.getBounds2D().getCenterX(),
-                //       lastShape.getBounds2D().getCenterY());
-                //                // Apply rotation to the last shape
-//                Shape rotatedShape = rotation.createTransformedShape(lastShape);
-//                // Add the rotated shape to the DrawingArea
-//                DrawingArea.addShape(new Area(rotatedShape,Color.red));
-//                DrawingArea.repaint();
-//
-//                System.out.println("get rotated");
+
 
 
 
@@ -883,7 +929,7 @@ public class GuiController extends JPanel implements Serializable{
 
                 Shape scaledShape  = centeringTransform.createTransformedShape(oddlyPlacedScaledShape);
 
-                DrawingArea.addShape(new Area(scaledShape,Color.red));
+                DrawingArea.setShapeAtIndex(new Area(scaledShape,getColorWrapper(DrawingArea.getPosCurrentlySelectedShape())),DrawingArea.getPosCurrentlySelectedShape());
                 DrawingArea.repaint();
 
 
@@ -893,6 +939,35 @@ public class GuiController extends JPanel implements Serializable{
 
 
 
+
+
+            }}
+        });
+        setAngle.addActionListener(new ActionListener() {
+            /**
+             * @param e the event to be processed
+             */
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                if(getCurrentMode() == MouseMode.SELECTION && DrawingArea.getPosCurrentlySelectedShape() != -1){
+
+                    Shape selectedShape = (Shape) DrawingArea.getShapeAtIndex(DrawingArea.getPosCurrentlySelectedShape());
+                    // Create an AffineTransform for rotation
+                    double angle =  Math.toRadians((int)angleSpinner.getValue());
+                    AffineTransform rotation = AffineTransform.getRotateInstance(angle,
+                            selectedShape.getBounds2D().getCenterX(),
+                            selectedShape.getBounds2D().getCenterY());
+                    // Apply rotation to the last shape
+                    Shape rotatedShape = rotation.createTransformedShape(selectedShape);
+                    // update the shape
+                    DrawingArea.setShapeAtIndex(new Area(rotatedShape,getColorWrapper(DrawingArea.getPosCurrentlySelectedShape())),DrawingArea.getPosCurrentlySelectedShape());
+                    DrawingArea.repaint();
+
+                    System.out.println("get rotated");
+                }else{
+                    System.out.println("need to be in mouse mode to rotate");
+                }
 
 
             }

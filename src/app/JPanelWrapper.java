@@ -5,12 +5,16 @@ import app.shapes.CanvasTools;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.Path2D;
+import java.awt.geom.PathIterator;
 import java.util.ArrayList;
 
 
 public class JPanelWrapper extends JPanel {
 
     private final ArrayList<CanvasTools> ShapesList = new ArrayList<>();
+
+    private int posCurrentlySelectedShape = -1;
 
     public int getNumberOfShapes(){
         return ShapesList.size();
@@ -71,6 +75,14 @@ public class JPanelWrapper extends JPanel {
         for(CanvasTools s:ShapesList){
             s.draw((Graphics2D) g);
         }
+        if(posCurrentlySelectedShape != -1){ // a shape is selected
+            PathIterator selectedShapePath = ((Shape)getShapeAtIndex(getPosCurrentlySelectedShape())).getPathIterator(null);
+            Path2D.Double contour = new Path2D.Double();
+            contour.append(selectedShapePath,true);
+            gg.setColor(Color.red);// Contour color
+            gg.setStroke(new BasicStroke(2)); // Contour stroke width
+            gg.draw(contour);
+        }
     }
 
     public Color getCurrentColor() {
@@ -79,5 +91,13 @@ public class JPanelWrapper extends JPanel {
 
     public void setCurrentColor(Color currentColor) {
         CurrentColor = currentColor;
+    }
+
+    public int getPosCurrentlySelectedShape() {
+        return posCurrentlySelectedShape;
+    }
+
+    public void setPosCurrentlySelectedShape(int posCurrentlySelectedShape) {
+        this.posCurrentlySelectedShape = posCurrentlySelectedShape;
     }
 }
