@@ -213,16 +213,6 @@
                   <text value="⊕"/>
                 </properties>
               </component>
-              <component id="74795" class="javax.swing.JButton" binding="resizeButton">
-                <constraints/>
-                <properties>
-                  <enabled value="true"/>
-                  <maximumSize width="60" height="60"/>
-                  <minimumSize width="60" height="60"/>
-                  <preferredSize width="60" height="60"/>
-                  <text value="x2 size"/>
-                </properties>
-              </component>
               <hspacer id="b0b4b">
                 <constraints/>
               </hspacer>

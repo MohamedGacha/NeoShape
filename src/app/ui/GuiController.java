@@ -6,10 +6,7 @@ import app.shapes.Rectangle;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.awt.geom.AffineTransform;
 
 import java.awt.geom.Rectangle2D;
@@ -58,7 +55,6 @@ public class GuiController extends JPanel implements Serializable{
     private JLabel blueLabel;
     private JLabel greenLabel;
     private JLabel colorLabel;
-    private JButton resizeButton;
     private JSpinner angleSpinner;
     private JButton setAngle;
     private JLabel roatationLabel;
@@ -884,65 +880,59 @@ public class GuiController extends JPanel implements Serializable{
                 }
             }
         });
-        resizeButton.addActionListener(new ActionListener() {
-            /**
-             * @param e the event to be processed
-             */
+
+
+        DrawingArea.addMouseWheelListener(new MouseWheelListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void mouseWheelMoved(MouseWheelEvent e) {
+                int wheelRotation = e.getWheelRotation();
+                if (wheelRotation < 0) {
+                    // Scroll wheel up - scale up the shape
+                    scaleShape(1.5); // Scale factor of 2.0 for scaling up
+                } else {
+                    // Scroll wheel down - scale down the shape
+                    scaleShape(0.5); // Scale factor of 0.5 for scaling down
+                }
+            }
 
+            private void scaleShape(double scaleFactor) {
+                if (getCurrentMode() == MouseMode.SELECTION && DrawingArea.getPosCurrentlySelectedShape() != -1) {
+                    // Shape to act upon
+                    Shape lastShape = (Shape) DrawingArea.getShapeAtIndex(DrawingArea.getPosCurrentlySelectedShape());
 
-                if(getCurrentMode() == MouseMode.SELECTION && DrawingArea.getPosCurrentlySelectedShape() != -1){
+                    // Get the bounds of the last shape
+                    Rectangle2D bounds = lastShape.getBounds2D();
 
-                // shape to act upon
-                Shape lastShape = (Shape)DrawingArea.getShapeAtIndex(DrawingArea.getPosCurrentlySelectedShape());
+                    // Calculate the center of the shape
+                    double centerX = bounds.getCenterX();
+                    double centerY = bounds.getCenterY();
 
+                    // Create an AffineTransform for scaling
+                    AffineTransform scaling = AffineTransform.getScaleInstance(scaleFactor, scaleFactor);
 
+                    // Translate the scaling transformation to keep the shape in place
+                    Shape scaledShape = scaling.createTransformedShape(lastShape);
 
+                    // Get the bounds of the scaled shape
+                    Rectangle2D newBounds = scaledShape.getBounds2D();
 
+                    // Calculate the new center of the shape
+                    double newCenterX = newBounds.getCenterX();
+                    double newCenterY = newBounds.getCenterY();
 
+                    // Translate the scaled shape to maintain the original position
+                    AffineTransform centeringTransform = AffineTransform.getTranslateInstance(centerX - newCenterX, centerY - newCenterY);
+                    scaledShape = centeringTransform.createTransformedShape(scaledShape);
 
-                // for scaling:
-                // Get the bounds of the last shape
-                Rectangle2D bounds = lastShape.getBounds2D();
+                    // Update the shape in the DrawingArea
+                    DrawingArea.setShapeAtIndex(new Area(scaledShape, getColorWrapper(DrawingArea.getPosCurrentlySelectedShape())), DrawingArea.getPosCurrentlySelectedShape());
+                    DrawingArea.repaint();
 
-                // Calculate the center of the shape
-                double centerX = bounds.getCenterX();
-                double centerY = bounds.getCenterY();
-
-
-                // Create an AffineTransform for scaling up
-                AffineTransform scaling = AffineTransform.getScaleInstance(2.0, 2.0);
-
-                // Translate the scaling transformation to keep the shape in place
-                Shape oddlyPlacedScaledShape = scaling.createTransformedShape(lastShape);
-                // get new shape center
-                // Get the bounds of the last shape
-                Rectangle2D new_bounds = oddlyPlacedScaledShape.getBounds2D();
-
-                // Calculate the center of the shape
-                double new_centerX = new_bounds.getCenterX();
-                double new_centerY = new_bounds.getCenterY();
-
-
-                AffineTransform centeringTransform = AffineTransform.getTranslateInstance(-Math.abs(centerX - new_centerX), -Math.abs(centerY -new_centerY));
-
-                Shape scaledShape  = centeringTransform.createTransformedShape(oddlyPlacedScaledShape);
-
-                DrawingArea.setShapeAtIndex(new Area(scaledShape,getColorWrapper(DrawingArea.getPosCurrentlySelectedShape())),DrawingArea.getPosCurrentlySelectedShape());
-                DrawingArea.repaint();
-
-
-                System.out.println("get scaled");
-
-
-
-
-
-
-
-            }}
+                    System.out.println("Shape scaled");
+                }
+            }
         });
+
         setAngle.addActionListener(new ActionListener() {
             /**
              * @param e the event to be processed

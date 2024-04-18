@@ -3,8 +3,9 @@ package app.shapes;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Path2D;
+import java.io.Serializable;
 
-public class Triangle extends Path2D.Double implements CanvasTools {
+public class Triangle extends Path2D.Double implements CanvasTools, Serializable {
 
     protected Color shapeColor;
 
