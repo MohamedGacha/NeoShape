@@ -885,53 +885,58 @@ public class GuiController extends JPanel implements Serializable{
         DrawingArea.addMouseWheelListener(new MouseWheelListener() {
             @Override
             public void mouseWheelMoved(MouseWheelEvent e) {
-                int wheelRotation = e.getWheelRotation();
-                if (wheelRotation < 0) {
-                    // Scroll wheel up - scale up the shape
-                    scaleShape(1.5); // Scale factor of 2.0 for scaling up
+                if (e.isAltDown()) {
+                    // Alt key is pressed, perform rotation
+                    rotateShape(e.getWheelRotation());
                 } else {
-                    // Scroll wheel down - scale down the shape
-                    scaleShape(0.5); // Scale factor of 0.5 for scaling down
+                    // Alt key is not pressed, perform scaling
+                    scaleShape(e.getWheelRotation());
                 }
             }
 
-            private void scaleShape(double scaleFactor) {
+            private void rotateShape(int wheelRotation) {
                 if (getCurrentMode() == MouseMode.SELECTION && DrawingArea.getPosCurrentlySelectedShape() != -1) {
-                    // Shape to act upon
-                    Shape lastShape = (Shape) DrawingArea.getShapeAtIndex(DrawingArea.getPosCurrentlySelectedShape());
+                    Shape selectedShape = (Shape) DrawingArea.getShapeAtIndex(DrawingArea.getPosCurrentlySelectedShape());
+                    double angle = Math.toRadians(wheelRotation * 5); // Adjust rotation angle as needed
+                    AffineTransform rotation = AffineTransform.getRotateInstance(angle,
+                            selectedShape.getBounds2D().getCenterX(),
+                            selectedShape.getBounds2D().getCenterY());
+                    Shape rotatedShape = rotation.createTransformedShape(selectedShape);
+                    DrawingArea.setShapeAtIndex(new Area(rotatedShape, getColorWrapper(DrawingArea.getPosCurrentlySelectedShape())), DrawingArea.getPosCurrentlySelectedShape());
+                    DrawingArea.repaint();
+                    System.out.println("Shape rotated");
+                }
+            }
 
-                    // Get the bounds of the last shape
-                    Rectangle2D bounds = lastShape.getBounds2D();
-
+            private void scaleShape(int wheelRotation) {
+                if (getCurrentMode() == MouseMode.SELECTION && DrawingArea.getPosCurrentlySelectedShape() != -1) {
+                    Shape selectedShape = (Shape) DrawingArea.getShapeAtIndex(DrawingArea.getPosCurrentlySelectedShape());
+                    double scaleFactor = wheelRotation < 0 ? 1.5 : 0.5; // Scale factor for scaling up or down
+                    // Get the bounds of the shape
+                    Rectangle2D bounds = selectedShape.getBounds2D();
                     // Calculate the center of the shape
                     double centerX = bounds.getCenterX();
                     double centerY = bounds.getCenterY();
-
                     // Create an AffineTransform for scaling
                     AffineTransform scaling = AffineTransform.getScaleInstance(scaleFactor, scaleFactor);
-
                     // Translate the scaling transformation to keep the shape in place
-                    Shape scaledShape = scaling.createTransformedShape(lastShape);
-
+                    Shape scaledShape = scaling.createTransformedShape(selectedShape);
                     // Get the bounds of the scaled shape
                     Rectangle2D newBounds = scaledShape.getBounds2D();
-
                     // Calculate the new center of the shape
                     double newCenterX = newBounds.getCenterX();
                     double newCenterY = newBounds.getCenterY();
-
                     // Translate the scaled shape to maintain the original position
                     AffineTransform centeringTransform = AffineTransform.getTranslateInstance(centerX - newCenterX, centerY - newCenterY);
                     scaledShape = centeringTransform.createTransformedShape(scaledShape);
-
                     // Update the shape in the DrawingArea
                     DrawingArea.setShapeAtIndex(new Area(scaledShape, getColorWrapper(DrawingArea.getPosCurrentlySelectedShape())), DrawingArea.getPosCurrentlySelectedShape());
                     DrawingArea.repaint();
-
                     System.out.println("Shape scaled");
                 }
             }
         });
+
 
         setAngle.addActionListener(new ActionListener() {
             /**
@@ -962,6 +967,8 @@ public class GuiController extends JPanel implements Serializable{
 
             }
         });
+
+
     }
 
     private void enableAllDrawingButtonsExcept(JButton buttonToExclude) {
@@ -1012,6 +1019,8 @@ public class GuiController extends JPanel implements Serializable{
     }
 
     public void loadShapesFromFile(String filename) {
+
+
         try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(filename))) {
             // Read the list of shapes from the file
             List<CanvasTools> shapes = (List<CanvasTools>) inputStream.readObject();

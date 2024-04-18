@@ -6,19 +6,23 @@ import java.awt.geom.Path2D;
 import java.io.Serializable;
 
 public class Heart extends Path2D.Double implements CanvasTools, Serializable {
-
     protected Color shapeColor;
 
     public void setShapeColor(Color shapeColor) {
         this.shapeColor = shapeColor;
     }
+    private static final long serialVersionUID = "app.shapes.Heart".hashCode();
 
     public Color getShapeColor() {
         return this.shapeColor;
     }
 
-
-    public Heart(Point startPoint, double width, double height,Color currentColor) {
+    // No-argument constructor required for deserialization
+    public Heart() {
+        super();
+    }
+    public Heart(Point startPoint, double width, double height, Color currentColor) {
+        super();
         double x = startPoint.getX();
         double y = startPoint.getY();
 
@@ -51,13 +55,13 @@ public class Heart extends Path2D.Double implements CanvasTools, Serializable {
     public void draw(Graphics2D g2d) {
         g2d.setColor(shapeColor);
         g2d.fill(this);
-
     }
 
     @Override
-    public void updateShapeDimensions(java.awt.event.MouseEvent e, int panelWidth, int panelHeight, int strokeWidth) {
+    public void updateShapeDimensions(MouseEvent e, int panelWidth, int panelHeight, int strokeWidth) {
         // Not applicable for Heart shape
     }
+
 
     public void DraggedUpdateShapeDimensions(Point initialPressedPoint, MouseEvent e, int panelWidth, int panelHeight, int strokeWidth) {
         double newWidth = e.getX() - initialPressedPoint.getX();
