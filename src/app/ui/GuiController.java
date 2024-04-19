@@ -6,11 +6,9 @@ import app.shapes.Rectangle;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.dnd.DragSourceDragEvent;
 import java.awt.event.*;
 import java.awt.geom.AffineTransform;
 
-import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.ListIterator;
@@ -20,7 +18,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.util.List;
 import java.io.*;
 
 
@@ -29,7 +26,7 @@ public class GuiController extends JPanel implements Serializable{
     private JButton New;
     private JButton Open;
     private JButton Save;
-    private JButton Server;
+    private JButton Import;
     private JButton Exit;
     private JButton selectionModeButton;
     private JButton rectangleDrawingModeButton;
@@ -61,6 +58,7 @@ public class GuiController extends JPanel implements Serializable{
     private JSpinner angleSpinner;
     private JButton setAngle;
     private JLabel roatationLabel;
+    private JButton Export;
 
     //int mouseDragdX, mouseDragdY;
     private Point mousePosition; // relative to DrawingArea
@@ -267,19 +265,7 @@ public class GuiController extends JPanel implements Serializable{
             }
         });
 
-        // Add action listener to the Server button
-        Server.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Prompt user to enter IP address and port
-                String ipAddress = JOptionPane.showInputDialog(null, "Enter IP Address:");
-                String portString = JOptionPane.showInputDialog(null, "Enter Port Number:");
-                int port = Integer.parseInt(portString);
 
-                // Start the server
-                startServer(ipAddress, port);
-            }
-        });
 
         Save.addActionListener(new ActionListener() {
             @Override
@@ -1087,16 +1073,6 @@ public class GuiController extends JPanel implements Serializable{
                 filename += ".shp"; // Ajoute l'extension .shp si elle n'est pas déjà présente
             }
             saveShapesToFile(filename);
-        }
-    }
-    private void startServer(String ipAddress, int port) {
-        try {
-            // Create a ServerSocket object bound to the provided IP address and port
-            // Start listening for incoming connections, handle client connections in a separate thread
-            // Implementation of this method is provided in the previous answer
-        } catch (Exception e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Error starting server: " + e.getMessage(), "Server Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 

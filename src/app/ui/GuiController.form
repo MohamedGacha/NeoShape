@@ -84,9 +84,10 @@
               <verticalAlignment value="0"/>
             </properties>
           </component>
-          <component id="3fdf5" class="javax.swing.JButton" binding="Server">
+          <component id="3fdf5" class="javax.swing.JButton" binding="Import">
             <constraints/>
             <properties>
+              <actionCommand value=""/>
               <borderPainted value="false"/>
               <contentAreaFilled value="false"/>
               <focusPainted value="false"/>
@@ -95,7 +96,23 @@
               <maximumSize width="90" height="30"/>
               <minimumSize width="60" height="30"/>
               <preferredSize width="60" height="30"/>
-              <text value="Server"/>
+              <text value="RMI Import"/>
+              <verticalAlignment value="0"/>
+            </properties>
+          </component>
+          <component id="53f02" class="javax.swing.JButton" binding="Export">
+            <constraints/>
+            <properties>
+              <actionCommand value=""/>
+              <borderPainted value="false"/>
+              <contentAreaFilled value="false"/>
+              <focusPainted value="false"/>
+              <focusable value="false"/>
+              <horizontalAlignment value="0"/>
+              <maximumSize width="90" height="30"/>
+              <minimumSize width="60" height="30"/>
+              <preferredSize width="60" height="30"/>
+              <text value="RMI Export"/>
               <verticalAlignment value="0"/>
             </properties>
           </component>
