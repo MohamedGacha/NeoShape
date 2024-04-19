@@ -76,21 +76,25 @@ public class JPanelWrapper extends JPanel {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        Graphics2D gg = (Graphics2D)g;
+        Graphics2D gg = (Graphics2D) g;
         gg.setPaint(CurrentColor);
         gg.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        for(CanvasTools s:ShapesList){
-            s.draw((Graphics2D) g);
+        for (CanvasTools s : ShapesList) {
+            s.draw(gg);
         }
-        if(posCurrentlySelectedShape != -1){ // a shape is selected
-            PathIterator selectedShapePath = ((Shape)getShapeAtIndex(getPosCurrentlySelectedShape())).getPathIterator(null);
-            Path2D.Double contour = new Path2D.Double();
-            contour.append(selectedShapePath,true);
-            gg.setColor(Color.red);// Contour color
-            gg.setStroke(new BasicStroke(2)); // Contour stroke width
-            gg.draw(contour);
+        if (posCurrentlySelectedShape != -1) { // a shape is selected
+            if (posCurrentlySelectedShape < ShapesList.size()) { // Check if posCurrentlySelectedShape is within bounds
+                PathIterator selectedShapePath = ((Shape) getShapeAtIndex(posCurrentlySelectedShape)).getPathIterator(null);
+                Path2D.Double contour = new Path2D.Double();
+                contour.append(selectedShapePath, true);
+                gg.setColor(Color.red);// Contour color
+                gg.setStroke(new BasicStroke(2)); // Contour stroke width
+                gg.draw(contour);
+            }
         }
     }
+
+
 
     public void deleteSelectedShape() {
         pushToStack();
