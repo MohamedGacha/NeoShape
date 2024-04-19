@@ -1,44 +1,35 @@
-* swing implementation example of union intersection etc:
-        public void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D)g;
-        ...
-        Area areaOne = new Area(ellipse);
-        Area areaTwo = new Area(rectangle);
-        if (option.equals("add")) areaOne.add(areaTwo);
-        else if (option.equals("intersection")) areaOne.intersect(areaTwo);
-        else if (option.equals("subtract")) areaOne.subtract(areaTwo);
-        else if (option.equals("exclusive or")) areaOne.exclusiveOr(areaTwo);
-        g2.setPaint(Color.orange);
-        g2.fill(areaOne);
-        g2.setPaint(Color.black);
-        g2.draw(areaOne);
-        }
 
-
-* shapes subclasses:
-    - awt.Polygon [awt] (defined by list of points):
-    - rectangle [awt]:
-            - square
-    - ellipse [geom.Ellipse2D.Double/Float]: (choose double or float will depending on the canvas' precision )
-        - circle (width = height)
-    - arc [geom.arc2d]
-    - polyline ( DONT make it mother of polygon cuz polygon is not only a polyline which endpoint=startpoint but should also check if lines intersect with each other, math stufff)
-        - triangle (choose method of creation of ur choice/ use multiple creation methods)
-
-* each sub-shape needs to have:
-    - constructor
-    - draw
-    - select (tricky for some)
-    - unselect
-    - getLayer for advanced selection
-    -? fill
-    -? getcenter/getpoints/...
 
 
 * set buffering strategy and other settings for jframe
 
-* will not use a shape mother class, because if i do i wont be able to make the class Ellipse a child of both Shape and awt.Ellipse2d, i will have to add a middleclass between them and i'd rather use interface and keep the uml class structure as small as possible
+* will not use a shape mother class, because if i do i won't be able to make the class Ellipse a child of both Shape and awt.Ellipse2d, i will have to add a middleclass between them and i'd rather use interface and keep the uml class structure as small as possible
 * also shape is already defined in awt as an interface, so all the predefined classes that will be used already have it
 * canvastools contains the needed functions for canvas operations (select,fill,draaw...)
 
 * need to fix stroke + color refreshing whenever want to redraw
+
+
+
+1- Une description des functionalist réalisées (ou possibles) sur un diagramme des cas d’utilisation.
+NB. Pour l’ensemble des diagrams, veillez à utiliser le maximum de concepts vus en cours; par exemple, en faisant apparaitre les différents types de relations entre Use Cases.
+
+2- En utilisant un diagramme de séquence, donner les interactions nécessaires pour créer une
+différence de 2 rectangles qui est ensuite redimensionnée.NB. On veillera à faire apparaitre les états du logiciel à chaque étape de la création et du redimensionnement.
+
+3- Représenter le comportement (partiel) du logiciel sur un diagramme d’état (statechart). Ce diagramme devra faire apparaitre:
+                    1) les états définis à la question précédente
+                    2) les transitions permettant de déplacer une forme.
+
+4- Sur un diagramme de communication, illustrer les opérations réalisées pour redimensionner la forme de la Figure 2.
+
+5- Proposer un diagramme des classes détaillant les principaux éléments du logiciel réalisés.
+NB. On fera apparaˆıtre la/les classe(s) utilis´ee(s) pour permettre le rendu d’une forme sur
+l’interface graphique. On fera aussi apparaˆıtre les diff´erents packages consid´er´es
+
+6- Sur un diagramme de déploiement, expliquer comment se fait la sauvegarde d’une forme sur un serveur distant.
+
+7- proposer deux exemples de contraintes OCL pour un invariant et une pré-post condition d’opération.
+
+8- Une courte conclusion résumant les possibilités, mais aussi les limites, du logiciel proposé avec quelques perspectives d’évolution possibles.
+

@@ -6,10 +6,13 @@ import app.shapes.Rectangle;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.dnd.DragSourceDragEvent;
 import java.awt.event.*;
 import java.awt.geom.AffineTransform;
 
+import java.awt.geom.Path2D;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
 import java.util.ListIterator;
 import javax.swing.SwingUtilities;
 
@@ -94,6 +97,8 @@ public class GuiController extends JPanel implements Serializable{
     public Area getAreaFromCanvasTools() {
         return (Area)DrawingArea.getLastShape();
     }
+
+
 
     public Color getColorWrapper(int pos) {
 
@@ -1011,7 +1016,14 @@ public class GuiController extends JPanel implements Serializable{
     public void saveShapesToFile(String filename) {
         try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(filename))) {
             // Écrire la liste des formes dans le fichier
-            outputStream.writeObject(DrawingArea.getShapesList());
+            ArrayList<CanvasTools> shapeListForSave = DrawingArea.getShapesList();
+
+            for (int i = 0; i < shapeListForSave.size(); i++) {
+                if(shapeListForSave.get(i) instanceof Area){ // area -> contour
+                    shapeListForSave.set(i, new Contour((Area)shapeListForSave.get(i)));
+                }
+            }
+            outputStream.writeObject(shapeListForSave);
             System.out.println("Formes sauvegardées dans " + filename);
         } catch (IOException e) {
             System.err.println("Erreur lors de la sauvegarde des formes : " + e.getMessage());
@@ -1023,13 +1035,24 @@ public class GuiController extends JPanel implements Serializable{
 
         try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(filename))) {
             // Read the list of shapes from the file
-            List<CanvasTools> shapes = (List<CanvasTools>) inputStream.readObject();
+            // transform path2d to area
+            ArrayList<CanvasTools> shapes = (ArrayList<CanvasTools>) inputStream.readObject();
+            int i =0;
+            for(CanvasTools path_object:shapes){
+                if( path_object instanceof Contour){
+                    shapes.set(i,new Area((Shape)path_object,((Contour) path_object).getShapeColor()));
+                }
+                i++;
+            }
+
             DrawingArea.getShapesList().clear(); // Clear existing shapes
             DrawingArea.getShapesList().addAll(shapes); // Add shapes from the file
             System.out.println("Shapes loaded from " + filename);
+            System.out.println(DrawingArea.getShapesList());
             DrawingArea.repaint(); // Repaint the panel to show the loaded shapes
         } catch (IOException | ClassNotFoundException e) {
             System.err.println("Error loading shapes: " + e.getMessage());
+            e.printStackTrace();
         }
     }
     private void saveToFile() {

@@ -26,6 +26,11 @@ public class Area extends java.awt.geom.Area implements CanvasTools, Serializabl
         this.shapeColor = mixedColor;
     }
 
+    public Area(Contour c, Color mixedColor) {
+        super(c.getPath());
+        this.shapeColor = mixedColor;
+    }
+
     /**
      *
      */
