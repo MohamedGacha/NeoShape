@@ -916,7 +916,7 @@ public class GuiController extends JPanel implements Serializable{
             private void scaleShape(int wheelRotation) {
                 if (getCurrentMode() == MouseMode.SELECTION && DrawingArea.getPosCurrentlySelectedShape() != -1) {
                     Shape selectedShape = (Shape) DrawingArea.getShapeAtIndex(DrawingArea.getPosCurrentlySelectedShape());
-                    double scaleFactor = wheelRotation < 0 ? 1.5 : 0.5; // Scale factor for scaling up or down
+                    double scaleFactor = wheelRotation < 0 ? 1.1 : 0.9; // Scale factor for scaling up or down
                     // Get the bounds of the shape
                     Rectangle2D bounds = selectedShape.getBounds2D();
                     // Calculate the center of the shape
@@ -974,7 +974,27 @@ public class GuiController extends JPanel implements Serializable{
         });
 
 
+        DrawingArea.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0), "deleteShape");
+        DrawingArea.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_BACK_SPACE, 0), "deleteShape");
+        DrawingArea.getActionMap().put("deleteShape", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DrawingArea.deleteSelectedShape();
+                System.out.println("delete");
+            }
+        });
+        DrawingArea.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke(KeyEvent.VK_Z, KeyEvent.CTRL_DOWN_MASK), "undo");
+        DrawingArea.getActionMap().put("undo", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DrawingArea.undo();
+            }
+        });
+
+
+
     }
+
 
     private void enableAllDrawingButtonsExcept(JButton buttonToExclude) {
         rectangleDrawingModeButton.setEnabled(true);

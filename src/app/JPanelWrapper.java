@@ -5,14 +5,17 @@ import app.shapes.CanvasTools;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.geom.Path2D;
 import java.awt.geom.PathIterator;
 import java.util.ArrayList;
+import java.util.Stack;
 
 
 public class JPanelWrapper extends JPanel {
 
     private final ArrayList<CanvasTools> ShapesList = new ArrayList<>();
+    private final Stack<ArrayList<CanvasTools>> shapeListStack = new Stack<>();
 
     private int posCurrentlySelectedShape = -1;
 
@@ -20,7 +23,8 @@ public class JPanelWrapper extends JPanel {
         return ShapesList.size();
     }
 
-    public void deleteShape(int index){
+    public void deleteShape(int index) {
+        pushToStack();
         ShapesList.remove(index);
     }
 
@@ -33,6 +37,7 @@ public class JPanelWrapper extends JPanel {
     }
 
     public void deleteShape(CanvasTools shape){
+        pushToStack();
         ShapesList.removeIf(object -> object.equals(shape));
     }
 
@@ -56,6 +61,7 @@ public class JPanelWrapper extends JPanel {
 
 
     public void addShape(CanvasTools newShape) {
+        pushToStack();
         ShapesList.add(newShape);
     }
 
@@ -63,7 +69,8 @@ public class JPanelWrapper extends JPanel {
 
 
     public void clearShapes() {
-        ShapesList.clear(); // Clear all shapes from the ShapesList
+        pushToStack();
+        ShapesList.clear();
     }
 
     @Override
@@ -85,6 +92,24 @@ public class JPanelWrapper extends JPanel {
         }
     }
 
+    public void deleteSelectedShape() {
+        pushToStack();
+        // Get the position of the currently selected shape
+        int posCurrentlySelectedShape = getPosCurrentlySelectedShape();
+
+        // Check if a shape is currently selected
+        if (posCurrentlySelectedShape != -1) {
+            // Delete the selected shape from the ShapesList
+            deleteShape(posCurrentlySelectedShape);
+
+            // Clear the selection (optional)
+            setPosCurrentlySelectedShape(-1);
+
+            // Repaint the DrawingArea to reflect the changes
+            repaint();
+        }
+    }
+
     public Color getCurrentColor() {
         return CurrentColor;
     }
@@ -99,5 +124,17 @@ public class JPanelWrapper extends JPanel {
 
     public void setPosCurrentlySelectedShape(int posCurrentlySelectedShape) {
         this.posCurrentlySelectedShape = posCurrentlySelectedShape;
+    }
+
+    public void undo() {
+        if (!shapeListStack.isEmpty()) {
+            ShapesList.clear();
+            ShapesList.addAll(shapeListStack.pop());
+            repaint();
+        }
+    }
+
+    private void pushToStack() {
+        shapeListStack.push(new ArrayList<>(ShapesList));
     }
 }
