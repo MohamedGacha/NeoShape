@@ -250,6 +250,40 @@ public class GuiController extends JPanel implements Serializable{
     public GuiController() {
 
 
+        // Define keyboard shortcuts
+        KeyStroke copyShortcut = KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.CTRL_DOWN_MASK);
+        KeyStroke cutShortcut = KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.CTRL_DOWN_MASK);
+        KeyStroke pasteShortcut = KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.CTRL_DOWN_MASK);
+
+
+        // Add key bindings for copy, cut, and paste shortcuts
+        DrawingArea.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(copyShortcut, "copy");
+        DrawingArea.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(cutShortcut, "cut");
+        DrawingArea.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(pasteShortcut, "paste");
+
+        // Define action listeners for copy, cut, and paste shortcuts
+        DrawingArea.getActionMap().put("copy", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DrawingArea.copySelectedShape();
+            }
+        });
+
+        DrawingArea.getActionMap().put("cut", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DrawingArea.cutSelectedShape();
+            }
+        });
+
+        DrawingArea.getActionMap().put("paste", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                DrawingArea.pasteClipboard();
+            }
+        });
+
+
         Open.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

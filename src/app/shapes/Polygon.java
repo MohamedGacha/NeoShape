@@ -51,4 +51,9 @@ public class Polygon extends java.awt.Polygon implements CanvasTools{
     public int getLayer() {
         return 0;
     }
+
+    @Override
+    public CanvasTools copy() {
+        return null;
+    }
 }

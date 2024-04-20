@@ -8,6 +8,8 @@ import java.io.Serializable;
 public class Triangle extends Path2D.Double implements CanvasTools, Serializable {
 
     protected Color shapeColor;
+    protected double width;
+    protected double height;
 
     public void setShapeColor(Color shapeColor) {
         this.shapeColor = shapeColor;
@@ -17,7 +19,15 @@ public class Triangle extends Path2D.Double implements CanvasTools, Serializable
         return this.shapeColor;
     }
 
-    public Triangle(Point startPoint, double width, double height,Color currentColor) {
+    public double getWidth() {
+        return this.width;
+    }
+
+    public double getHeight() {
+        return this.height;
+    }
+
+    public Triangle(Point startPoint, double width, double height, Color currentColor) {
         double x = startPoint.getX();
         double y = startPoint.getY();
 
@@ -38,6 +48,9 @@ public class Triangle extends Path2D.Double implements CanvasTools, Serializable
 
         // Close the path to complete the shape
         closePath();
+
+        this.width = width;
+        this.height = height;
         setShapeColor(currentColor);
     }
 
@@ -51,7 +64,6 @@ public class Triangle extends Path2D.Double implements CanvasTools, Serializable
     public void updateShapeDimensions(MouseEvent e, int panelWidth, int panelHeight, int strokeWidth) {
         // Not applicable for Triangle shape
     }
-
 
     public void DraggedUpdateShapeDimensions(Point initialPressedPoint, MouseEvent e, int panelWidth, int panelHeight, int strokeWidth) {
         double newWidth = e.getX() - initialPressedPoint.getX();
@@ -79,6 +91,9 @@ public class Triangle extends Path2D.Double implements CanvasTools, Serializable
 
         // Close the path to complete the shape
         closePath();
+
+        this.width = newWidth;
+        this.height = newHeight;
     }
 
     @Override
@@ -94,5 +109,13 @@ public class Triangle extends Path2D.Double implements CanvasTools, Serializable
     @Override
     public int getLayer() {
         return 0;
+    }
+
+    @Override
+    public CanvasTools copy() {
+        // Create a new Triangle with the same parameters as the current one
+        Triangle copiedTriangle = new Triangle(new Point(100, 100),
+                getWidth(), getHeight(), getShapeColor());
+        return copiedTriangle;
     }
 }

@@ -1,11 +1,12 @@
 package app;
 
-import app.shapes.Area;
 import app.shapes.CanvasTools;
+import java.awt.geom.Area;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
 import java.awt.geom.PathIterator;
 import java.util.ArrayList;
@@ -14,8 +15,62 @@ import java.util.Stack;
 
 public class JPanelWrapper extends JPanel {
 
-    private final ArrayList<CanvasTools> ShapesList = new ArrayList<>();
-    private final Stack<ArrayList<CanvasTools>> shapeListStack = new Stack<>();
+    private ArrayList<CanvasTools> ShapesList = new ArrayList<>();
+    private Stack<ArrayList<CanvasTools>> shapeListStack = new Stack<>();
+    private ArrayList<CanvasTools> clipboard = new ArrayList<>();
+
+
+    public void copySelectedShape() {
+        if (posCurrentlySelectedShape != -1) {
+            CanvasTools selectedShape = ShapesList.get(posCurrentlySelectedShape);
+            // Create a new shape representing the union of the selected shape with itself
+            Area copiedShape = new Area((Shape) selectedShape);
+            clipboard.clear();
+            clipboard.add(selectedShape.copy());
+            System.out.println("Shape copied to clipboard.");
+        }
+    }
+
+
+
+    public void cutSelectedShape() {
+        if (posCurrentlySelectedShape != -1) {
+            CanvasTools selectedShape = ShapesList.get(posCurrentlySelectedShape);
+            // Create a new shape representing the union of the selected shape with itself
+            clipboard.clear();
+            clipboard.add(selectedShape.copy());
+            deleteSelectedShape();
+            System.out.println("Shape cut and copied to clipboard.");
+        }
+    }
+
+
+    public void pasteClipboard() {
+        if (!clipboard.isEmpty()) {
+            CanvasTools shapeToPaste = clipboard.get(0).copy();
+            if (shapeToPaste instanceof Area) {
+                // Example: Calculate offset based on mouse position
+                int offsetX = 0;
+                int offsetY = 0;
+                ((Area) shapeToPaste).transform(AffineTransform.getTranslateInstance(offsetX, offsetY));
+                addShape((CanvasTools) shapeToPaste);
+                System.out.println("Shape pasted from clipboard.");
+            } else {
+                System.out.println("Cannot paste shape: Unsupported type.");
+                // Optionally, you might want to log or display an error message.
+            }
+        } else {
+            System.out.println("Clipboard is empty. Nothing to paste.");
+            // Optionally, you might want to log or display an error message.
+        }
+        repaint();
+    }
+
+
+
+
+
+
 
     private int posCurrentlySelectedShape = -1;
 

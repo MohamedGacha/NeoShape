@@ -89,4 +89,15 @@ public class Rectangle extends java.awt.geom.Rectangle2D.Double implements Canva
     public int getLayer() {
         return 0;
     }
+
+    @Override
+    public CanvasTools copy() {
+        // Create a new Rectangle with the same parameters as the current one
+        Rectangle copiedRectangle = new Rectangle(new Point(100, 100),
+                this.getWidth(),
+                this.getHeight(),
+                this.getShapeColor());
+        return copiedRectangle;
+    }
+
 }

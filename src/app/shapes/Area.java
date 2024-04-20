@@ -2,6 +2,7 @@ package app.shapes;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.awt.geom.AffineTransform;
 import java.io.Serializable;
 
 
@@ -41,6 +42,8 @@ public class Area extends java.awt.geom.Area implements CanvasTools, Serializabl
         //System.out.println("drew the area!!");
     }
 
+
+
     /**
      * @param e
      * @param panelWidth
@@ -69,6 +72,11 @@ public class Area extends java.awt.geom.Area implements CanvasTools, Serializabl
         return false;
     }
 
+    @Override
+    public int getLayer() {
+        return 0;
+    }
+
 
     @Override
     public String toString() {
@@ -80,10 +88,22 @@ public class Area extends java.awt.geom.Area implements CanvasTools, Serializabl
     /**
      * @return
      */
-    @Override
-    public int getLayer() {
-        return 0;
+    public Area copy() {
+        // Create a new Area with the same shape and color
+        return new Area(this, shapeColor);
     }
+
+    /**
+     * Moves the shape by the specified offset.
+     *
+     * @param dx The horizontal offset.
+     * @param dy The vertical offset.
+     */
+    public void move(int dx, int dy) {
+        AffineTransform tx = AffineTransform.getTranslateInstance(dx, dy);
+        this.transform(tx);
+    }
+
 
 
 }

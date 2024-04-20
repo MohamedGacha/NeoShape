@@ -83,6 +83,21 @@ public class Contour implements CanvasTools, Serializable, Shape{
         return 0;
     }
 
+    @Override
+    public CanvasTools copy() {
+        // Create a new Path2D.Double object and copy the contents of the current path to it
+        Path2D.Double newPath = new Path2D.Double(path);
+
+        // Create a new Contour with the copied path and the same color as the current one
+        Contour copiedContour = new Contour();
+        copiedContour.setPath(newPath);
+        copiedContour.setShapeColor(this.getShapeColor());
+
+        return copiedContour;
+    }
+
+
+
     /**
      * @return
      */
@@ -188,4 +203,8 @@ public class Contour implements CanvasTools, Serializable, Shape{
     public PathIterator getPathIterator(AffineTransform at, double flatness) {
         return path.getPathIterator(at,flatness);
     }
+
+
+
+
 }

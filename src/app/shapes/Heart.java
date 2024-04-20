@@ -3,10 +3,12 @@ package app.shapes;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Path2D;
+import java.awt.geom.Point2D;
 import java.io.Serializable;
 
 public class Heart extends Path2D.Double implements CanvasTools, Serializable {
     protected Color shapeColor;
+
 
     public void setShapeColor(Color shapeColor) {
         this.shapeColor = shapeColor;
@@ -110,4 +112,16 @@ public class Heart extends Path2D.Double implements CanvasTools, Serializable {
     public int getLayer() {
         return 0;
     }
+
+    @Override
+    public CanvasTools copy() {
+        // Create a new Heart with the same parameters as the current one
+        Heart copiedHeart = new Heart(new Point(100, 100),
+                this.getBounds2D().getWidth(),
+                this.getBounds2D().getHeight(),
+                this.getShapeColor());
+        return copiedHeart;
+    }
+
+
 }

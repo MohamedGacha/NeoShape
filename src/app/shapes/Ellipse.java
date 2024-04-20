@@ -2,6 +2,7 @@ package app.shapes;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.awt.geom.AffineTransform;
 
 public class Ellipse extends java.awt.geom.Ellipse2D.Double implements CanvasTools {
 
@@ -76,6 +77,14 @@ public class Ellipse extends java.awt.geom.Ellipse2D.Double implements CanvasToo
     public int getLayer() {
         return 0;
     }
+
+    @Override
+    public CanvasTools copy() {
+        // Create a new Ellipse with the same properties as the current one
+        return new Ellipse(new Point(100, 100),
+                this.getWidth(), this.getHeight(), this.getShapeColor());
+    }
+
 
 
 }

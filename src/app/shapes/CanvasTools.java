@@ -5,7 +5,7 @@ import app.JPanelWrapper;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 
-public interface CanvasTools {
+public interface CanvasTools extends Cloneable{
 
 
     public abstract void draw(Graphics2D g2d);
@@ -19,4 +19,5 @@ public interface CanvasTools {
 
     public abstract int getLayer();
 
+    CanvasTools copy();
 }
