@@ -2,22 +2,8 @@ package app.shapes;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.awt.geom.Path2D;
-import java.awt.geom.Point2D;
-import java.io.Serializable;
 
-public class Heart extends Path2D.Double implements CanvasTools, Serializable {
-    protected Color shapeColor;
-
-
-    public void setShapeColor(Color shapeColor) {
-        this.shapeColor = shapeColor;
-    }
-    private static final long serialVersionUID = "app.shapes.Heart".hashCode();
-
-    public Color getShapeColor() {
-        return this.shapeColor;
-    }
+public class Heart extends Contour {
 
     // No-argument constructor required for deserialization
     public Heart() {
@@ -39,16 +25,16 @@ public class Heart extends Path2D.Double implements CanvasTools, Serializable {
         double yEnd2 = y + height;
 
         // Move to the starting point
-        moveTo(xEnd1, yEnd1);
+        path.moveTo(xEnd1, yEnd1);
 
         // Draw the left side of the heart
-        quadTo(xCtrl1, yCtrl1, x, y);
+        path.quadTo(xCtrl1, yCtrl1, x, y);
 
         // Draw the right side of the heart
-        quadTo(xCtrl2, yCtrl2, xEnd2, yEnd2);
+        path.quadTo(xCtrl2, yCtrl2, xEnd2, yEnd2);
 
         // Close the path to complete the shape
-        closePath();
+        path.closePath();
 
         setShapeColor(currentColor);
     }
@@ -73,7 +59,7 @@ public class Heart extends Path2D.Double implements CanvasTools, Serializable {
         double y = initialPressedPoint.getY();
 
         // Recreate the heart shape using the new dimensions
-        reset(); // Clear the current path
+        path.reset(); // Clear the current path
 
         double beX = x + newWidth / 2;  // bottom endpoint X
         double beY = y + newHeight;     // bottom endpoint Y
@@ -84,18 +70,18 @@ public class Heart extends Path2D.Double implements CanvasTools, Serializable {
         double c2DY = newHeight * 0.8;  // delta Y of control point 2
         double teDY = newHeight * 0.7;  // delta Y of top endpoint
 
-        moveTo(beX, beY);       // bottom endpoint
+        path.moveTo(beX, beY);       // bottom endpoint
         // left side of heart
-        curveTo(
+        path.curveTo(
                 beX - c1DX, beY - c1DY,   // control point 1
                 beX - c2DX, beY - c2DY,   // control point 2
                 beX, beY - teDY);  // top endpoint
         // right side of heart
-        curveTo(
+        path.curveTo(
                 beX + c2DX, beY - c2DY,   // control point 2
                 beX + c1DX, beY - c1DY,   // control point 1
                 beX, beY);         // bottom endpoint
-        closePath(); // Close the path to complete the shape
+        path.closePath(); // Close the path to complete the shape
     }
 
     @Override

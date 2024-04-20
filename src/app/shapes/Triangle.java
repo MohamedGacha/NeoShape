@@ -5,9 +5,8 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Path2D;
 import java.io.Serializable;
 
-public class Triangle extends Path2D.Double implements CanvasTools, Serializable {
+public class Triangle extends Contour {
 
-    protected Color shapeColor;
     protected double width;
     protected double height;
 
@@ -40,14 +39,14 @@ public class Triangle extends Path2D.Double implements CanvasTools, Serializable
         double y3 = y + height;
 
         // Move to the starting point
-        moveTo(x1, y1);
+        path.moveTo(x1, y1);
 
         // Draw the triangle
-        lineTo(x2, y2);
-        lineTo(x3, y3);
+        path.lineTo(x2, y2);
+        path.lineTo(x3, y3);
 
         // Close the path to complete the shape
-        closePath();
+        path.closePath();
 
         this.width = width;
         this.height = height;
@@ -73,7 +72,7 @@ public class Triangle extends Path2D.Double implements CanvasTools, Serializable
         double y = initialPressedPoint.getY();
 
         // Recreate the triangle shape using the new dimensions
-        reset(); // Clear the current path
+        path.reset(); // Clear the current path
 
         double x1 = x + newWidth / 2;
         double y1 = y;
@@ -83,14 +82,14 @@ public class Triangle extends Path2D.Double implements CanvasTools, Serializable
         double y3 = y + newHeight;
 
         // Move to the starting point
-        moveTo(x1, y1);
+        path.moveTo(x1, y1);
 
         // Draw the triangle
-        lineTo(x2, y2);
-        lineTo(x3, y3);
+        path.lineTo(x2, y2);
+        path.lineTo(x3, y3);
 
         // Close the path to complete the shape
-        closePath();
+        path.closePath();
 
         this.width = newWidth;
         this.height = newHeight;
@@ -114,8 +113,7 @@ public class Triangle extends Path2D.Double implements CanvasTools, Serializable
     @Override
     public CanvasTools copy() {
         // Create a new Triangle with the same parameters as the current one
-        Triangle copiedTriangle = new Triangle(new Point(100, 100),
+        return new Triangle(new Point(100, 100),
                 getWidth(), getHeight(), getShapeColor());
-        return copiedTriangle;
     }
 }

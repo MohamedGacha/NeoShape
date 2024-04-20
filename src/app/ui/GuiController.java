@@ -707,16 +707,15 @@ public class GuiController extends JPanel implements Serializable{
                         System.out.println(DrawingArea.getShapesList());
                         //setCurrentMode(MouseMode.SELECTION);
                         break;
+
+                    case DRAWING_HEART:
+
+
+                        break;
+
                     case DRAWING_TRIANGLE:
 
-                        Triangle triangle = (Triangle) DrawingArea.getLastShape();
 
-                        updateMousePosition(e);
-
-                        triangle.updateShapeDimensions(e,DrawingArea.getWidth(),DrawingArea.getHeight(),strokeCurrentWidth);
-
-                        DrawingArea.repaint();
-                        //setCurrentMode(MouseMode.SELECTION);
                         break;
                     case SELECTION:
                         // Handle selection mode
@@ -822,7 +821,7 @@ public class GuiController extends JPanel implements Serializable{
                 resetOperatorVariables();
                 setCurrentMode(MouseMode.DRAWING_TRIANGLE);
                 enableAllDrawingButtonsExcept(triangleDrawingModeButton);
-                System.out.println("set mode to heart drawing");
+                System.out.println("set mode to triangle drawing");
             }
         });
         intersectionOperatorButton.addActionListener(new ActionListener() {

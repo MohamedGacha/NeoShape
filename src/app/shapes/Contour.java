@@ -8,6 +8,9 @@ import java.io.Serializable;
 
 public class Contour implements CanvasTools, Serializable, Shape{
 
+    Path2D.Double path = new Path2D.Double();
+    protected Color shapeColor;
+
     public Path2D.Double getPath() {
         return path;
     }
@@ -16,8 +19,7 @@ public class Contour implements CanvasTools, Serializable, Shape{
         this.path = path;
     }
 
-    Path2D.Double path = new Path2D.Double();
-    protected Color shapeColor;
+
 
     public void setShapeColor(Color shapeColor) {
         this.shapeColor = shapeColor;

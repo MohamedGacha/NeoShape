@@ -66,7 +66,9 @@ public class JPanelWrapper extends JPanel {
         repaint();
     }
 
+    public void castShapeType(){ // for serialization, path2d
 
+    }
 
 
 
