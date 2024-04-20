@@ -266,26 +266,23 @@ public class GuiController extends JPanel implements Serializable{
             }
         });
 
-        Export.addActionListener(new ActionListener() {
-             @Override
-             public void actionPerformed(ActionEvent e) {
-                 Export dialog = new Export(DrawingArea);
-                 dialog.pack();
-                 dialog.setVisible(true);
-                }
-            }
 
-        );
+        Export.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Export exportDialog = new Export(DrawingArea);
+                // Set Import instance in Export dialog
+                exportDialog.pack();
+                exportDialog.setVisible(true);
+            }
+        });
 
         Import.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Import button clicked");
-                Import dialog = new Import(DrawingArea);
-                dialog.pack();
-                System.out.println("Dialog packed");
-                dialog.setVisible(true);
-                System.out.println("Dialog visibility set to true");
+                Import importDialog = new Import(DrawingArea);
+                importDialog.pack();
+                importDialog.setVisible(true);
             }
         });
 

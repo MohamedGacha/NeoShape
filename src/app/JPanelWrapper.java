@@ -94,7 +94,14 @@ public class JPanelWrapper extends JPanel {
         }
     }
 
+    public void setAndRepaintShapesList(ArrayList<CanvasTools> newShapesList) {
+        // Set the new shape list
+        ShapesList.clear();
+        ShapesList.addAll(newShapesList);
 
+        // Repaint the panel to reflect the changes
+        repaint();
+    }
 
     public void deleteSelectedShape() {
         pushToStack();

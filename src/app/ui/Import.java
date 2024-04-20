@@ -1,13 +1,18 @@
 package app.ui;
 
 import app.JPanelWrapper;
+import app.ShapeListService;
+import app.shapes.CanvasTools;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.rmi.registry.Registry;
 import java.rmi.registry.LocateRegistry;
+import java.util.ArrayList;
 
-public class Import extends JDialog {
+public class Import extends JDialog implements ShapeListService {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
@@ -19,6 +24,7 @@ public class Import extends JDialog {
 
     private static final int MAX_ATTEMPTS = 3; // Maximum number of attempts to connect to the RMI registry
     private static final long RETRY_DELAY = 1000; // Delay (in milliseconds) between each connection attempt
+    private Registry registry;
 
     public Import(JPanelWrapper DrawingArea) {
         this.DrawingArea = DrawingArea;
@@ -29,7 +35,13 @@ public class Import extends JDialog {
 
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                onOK();
+                try {
+                    onOK();
+                } catch (NotBoundException ex) {
+                    throw new RuntimeException(ex);
+                } catch (RemoteException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
 
@@ -42,7 +54,7 @@ public class Import extends JDialog {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
-    private void onOK() {
+    private void onOK() throws NotBoundException, RemoteException {
         String serverAddress = textField1.getText();
         int port = Integer.parseInt(textField2.getText());
 
@@ -51,7 +63,7 @@ public class Import extends JDialog {
         for (int attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
             try {
                 // Attempt to connect to the RMI registry
-                Registry registry = LocateRegistry.getRegistry(serverAddress, port);
+                registry = LocateRegistry.getRegistry(serverAddress, port);
 
                 // Check if connection is successful before printing
                 if (registry != null) {
@@ -74,15 +86,36 @@ public class Import extends JDialog {
         // If connected flag is still false after all attempts, print failure message
         if (!connected) {
             System.out.println("Connection to RMI registry failed");
+            ShapeListService shapeListService = (ShapeListService) registry.lookup("ShapeListService");
+            shapeListService.simple();
+        } else {
+            // Print "connected successfully"
+            System.out.println("Connected successfully");
         }
-
-        // Close the dialog regardless of connection status
-        dispose();
     }
+
 
 
 
     private void onCancel() {
         dispose();
     }
+
+    @Override
+    public ArrayList<CanvasTools> getShapeList() throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public void updateShapeList(JPanelWrapper newArea) throws RemoteException {
+        System.out.println("newArea");
+        //DrawingArea.setAndRepaintShapesList(newArea.getShapesList());
+    }
+
+    @Override
+    public void simple() {
+        System.out.println("simple");
+    }
+
+
 }
