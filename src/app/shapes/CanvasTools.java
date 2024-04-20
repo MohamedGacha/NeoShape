@@ -19,5 +19,8 @@ public interface CanvasTools extends Cloneable{
 
     public abstract int getLayer();
 
+
     CanvasTools copy();
+
+    public void setShapeColor(Color currentColor);
 }

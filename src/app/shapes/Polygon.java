@@ -56,4 +56,12 @@ public class Polygon extends java.awt.Polygon implements CanvasTools{
     public CanvasTools copy() {
         return null;
     }
+
+    /**
+     * @param currentColor
+     */
+    @Override
+    public void setShapeColor(Color currentColor) {
+        ;
+    }
 }

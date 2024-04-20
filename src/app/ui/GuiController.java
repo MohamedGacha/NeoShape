@@ -885,7 +885,10 @@ public class GuiController extends JPanel implements Serializable{
 
                 setCurrentColor(JColorChooser.showDialog(MainPanel, "select a coloor",java.awt.Color.BLUE,true));
 
-
+                if(getCurrentMode() == MouseMode.SELECTION && DrawingArea.getPosCurrentlySelectedShape() != -1){ // change current shape
+                    DrawingArea.getShapeAtIndex(DrawingArea.getPosCurrentlySelectedShape()).setShapeColor(getCurrentColor());
+                    DrawingArea.repaint();
+                }
 
                 //System.out.println(getCurrentColor());
             }
@@ -924,6 +927,10 @@ public class GuiController extends JPanel implements Serializable{
 
                 if(isValidRGBValue(red) && isValidRGBValue(green) && isValidRGBValue(blue)){
                     setCurrentColor(new Color(red,green,blue));
+                    if(getCurrentMode() == MouseMode.SELECTION && DrawingArea.getPosCurrentlySelectedShape() != -1){ // change current shape
+                        DrawingArea.getShapeAtIndex(DrawingArea.getPosCurrentlySelectedShape()).setShapeColor(getCurrentColor());
+                        DrawingArea.repaint();
+                    }
                 }
             }
         });
