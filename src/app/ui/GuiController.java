@@ -249,6 +249,7 @@ public class GuiController extends JPanel implements Serializable{
 
     public GuiController() {
 
+
         Open.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -264,6 +265,30 @@ public class GuiController extends JPanel implements Serializable{
                 }
             }
         });
+
+        Export.addActionListener(new ActionListener() {
+             @Override
+             public void actionPerformed(ActionEvent e) {
+                 Export dialog = new Export(DrawingArea);
+                 dialog.pack();
+                 dialog.setVisible(true);
+                }
+            }
+
+        );
+
+        Import.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Import button clicked");
+                Import dialog = new Import(DrawingArea);
+                dialog.pack();
+                System.out.println("Dialog packed");
+                dialog.setVisible(true);
+                System.out.println("Dialog visibility set to true");
+            }
+        });
+
 
 
 
@@ -894,6 +919,7 @@ public class GuiController extends JPanel implements Serializable{
                             selectedShape.getBounds2D().getCenterY());
                     Shape rotatedShape = rotation.createTransformedShape(selectedShape);
                     DrawingArea.setShapeAtIndex(new Area(rotatedShape, getColorWrapper(DrawingArea.getPosCurrentlySelectedShape())), DrawingArea.getPosCurrentlySelectedShape());
+                    DrawingArea.pushToStack();
                     DrawingArea.repaint();
                     System.out.println("Shape rotated");
                 }
@@ -922,6 +948,7 @@ public class GuiController extends JPanel implements Serializable{
                     scaledShape = centeringTransform.createTransformedShape(scaledShape);
                     // Update the shape in the DrawingArea
                     DrawingArea.setShapeAtIndex(new Area(scaledShape, getColorWrapper(DrawingArea.getPosCurrentlySelectedShape())), DrawingArea.getPosCurrentlySelectedShape());
+                    DrawingArea.pushToStack();
                     DrawingArea.repaint();
                     System.out.println("Shape scaled");
                 }
@@ -949,7 +976,7 @@ public class GuiController extends JPanel implements Serializable{
                     // update the shape
                     DrawingArea.setShapeAtIndex(new Area(rotatedShape,getColorWrapper(DrawingArea.getPosCurrentlySelectedShape())),DrawingArea.getPosCurrentlySelectedShape());
                     DrawingArea.repaint();
-
+                    DrawingArea.pushToStack();
                     System.out.println("get rotated");
                 }else{
                     System.out.println("need to be in mouse mode to rotate");

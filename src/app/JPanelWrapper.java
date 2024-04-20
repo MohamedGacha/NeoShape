@@ -114,6 +114,12 @@ public class JPanelWrapper extends JPanel {
         }
     }
 
+    public void setShapesList(ArrayList<CanvasTools> shapesList) {
+        this.ShapesList.clear();
+        this.ShapesList.addAll(shapesList);
+    }
+
+
     public Color getCurrentColor() {
         return CurrentColor;
     }
@@ -138,7 +144,7 @@ public class JPanelWrapper extends JPanel {
         }
     }
 
-    private void pushToStack() {
+    public void pushToStack() {
         shapeListStack.push(new ArrayList<>(ShapesList));
     }
 }

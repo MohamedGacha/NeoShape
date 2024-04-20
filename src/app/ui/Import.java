@@ -1,7 +1,11 @@
 package app.ui;
 
+import app.JPanelWrapper;
+
 import javax.swing.*;
 import java.awt.event.*;
+import java.rmi.registry.Registry;
+import java.rmi.registry.LocateRegistry;
 
 public class Import extends JDialog {
     private JPanel contentPane;
@@ -11,8 +15,14 @@ public class Import extends JDialog {
     private JTextField textField2;
     private JLabel ipLabel;
     private JLabel portLabel;
+    private JPanelWrapper DrawingArea;
 
-    public Import() {
+    private static final int MAX_ATTEMPTS = 3; // Maximum number of attempts to connect to the RMI registry
+    private static final long RETRY_DELAY = 1000; // Delay (in milliseconds) between each connection attempt
+
+    public Import(JPanelWrapper DrawingArea) {
+        this.DrawingArea = DrawingArea;
+        setTitle("RMI Import Service");
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -29,36 +39,50 @@ public class Import extends JDialog {
             }
         });
 
-        // call onCancel() when cross is clicked
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                onCancel();
-            }
-        });
-
-        // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
     private void onOK() {
-        // add your code here
+        String serverAddress = textField1.getText();
+        int port = Integer.parseInt(textField2.getText());
+
+        boolean connected = false; // Flag to track if connected successfully
+
+        for (int attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+            try {
+                // Attempt to connect to the RMI registry
+                Registry registry = LocateRegistry.getRegistry(serverAddress, port);
+
+                // Check if connection is successful before printing
+                if (registry != null) {
+                    System.out.println("Connected to RMI registry");
+                    connected = true; // Set the flag to true if connected
+                    break; // Exit the loop if connected
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+
+            // If not connected, wait for a retry delay before the next attempt
+            try {
+                Thread.sleep(RETRY_DELAY);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+        // If connected flag is still false after all attempts, print failure message
+        if (!connected) {
+            System.out.println("Connection to RMI registry failed");
+        }
+
+        // Close the dialog regardless of connection status
         dispose();
     }
+
+
 
     private void onCancel() {
-        // add your code here if necessary
         dispose();
-    }
-
-    public static void main(String[] args) {
-        Import dialog = new Import();
-        dialog.pack();
-        dialog.setVisible(true);
-        System.exit(0);
     }
 }
