@@ -9,6 +9,8 @@ import app.ShapeListService;
 import app.shapes.CanvasTools;
 
 public class ShapeListServiceImpl extends UnicastRemoteObject implements ShapeListService {
+    private CanvasTools receivedShape;
+
     protected ShapeListServiceImpl() throws RemoteException {
         super();
     }
@@ -19,12 +21,24 @@ public class ShapeListServiceImpl extends UnicastRemoteObject implements ShapeLi
     }
 
     @Override
-    public void updateShapeList(JPanelWrapper drawingArea) throws RemoteException {
-        System.out.println("drawingArea");
+    public void updateShapeList(JPanelWrapper newArea) throws RemoteException {
+
     }
 
     @Override
     public void simple() throws RemoteException {
-        System.out.println("simple");
+
+    }
+
+    @Override
+    public void sendShape(CanvasTools shape) throws RemoteException {
+        receivedShape = shape;
+        // Implement code to send the shape over RMI to the client
+    }
+
+    @Override
+    public CanvasTools receiveShape() throws RemoteException {
+        // Implement code to receive the shape over RMI from the client
+        return receivedShape;
     }
 }

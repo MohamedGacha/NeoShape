@@ -94,27 +94,41 @@ public class Import extends JDialog implements ShapeListService {
         }
     }
 
-
-
-
     private void onCancel() {
         dispose();
     }
 
     @Override
     public ArrayList<CanvasTools> getShapeList() throws RemoteException {
-        return null;
+        try {
+            // Lookup for the ShapeListService instance from the RMI registry
+            ShapeListService shapeListService = (ShapeListService) registry.lookup("shapeListService");
+            // Call the getShapeList method on the service instance to retrieve the shape list
+            return shapeListService.getShapeList();
+        } catch (Exception ex) {
+            throw new RemoteException("Failed to get shape list", ex);
+        }
     }
 
-    @Override
     public void updateShapeList(JPanelWrapper newArea) throws RemoteException {
         System.out.println("newArea");
-        //DrawingArea.setAndRepaintShapesList(newArea.getShapesList());
+        // DrawingArea.setAndRepaintShapesList(newArea.getShapesList());
+    }
+
+    public void simple() {
+        System.out.println("simple");
     }
 
     @Override
-    public void simple() {
-        System.out.println("simple");
+    public void sendShape(CanvasTools shape) throws RemoteException {
+        // Dummy implementation: do nothing or throw an exception
+        // For example:
+        // throw new UnsupportedOperationException("Import class does not send shapes");
+    }
+
+    @Override
+    public CanvasTools receiveShape() throws RemoteException {
+        return null;
     }
 
 
