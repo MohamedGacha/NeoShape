@@ -3,18 +3,17 @@ package app.ui;
 import app.JPanelWrapper;
 import app.ShapeListService;
 import app.shapes.CanvasTools;
-import app.ui.ShapeListServiceImpl;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.*;
 import java.net.InetAddress;
-import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.ArrayList;
 
-public class Export extends JDialog implements ShapeListService {
+public class Export extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
@@ -24,13 +23,11 @@ public class Export extends JDialog implements ShapeListService {
     private JLabel portLabel;
     private JButton exportButton;
     private JPanelWrapper drawingArea;
-    private static final int MAX_ATTEMPTS = 3; // Maximum number of attempts to connect to the RMI registry
-    private static final long RETRY_DELAY = 1000; // Delay (in milliseconds) between each connection attempt
-    private Registry registry;
+    private ServerSocket serverSocket;
 
     public Export(JPanelWrapper drawingArea) {
         this.drawingArea = drawingArea;
-        setTitle("RMI Export Service");
+        setTitle("TCP Export Service");
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
@@ -38,10 +35,10 @@ public class Export extends JDialog implements ShapeListService {
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
-                    onOK();
-                } catch (RemoteException ex) {
+                    startServer();
+                } catch (IOException ex) {
                     ex.printStackTrace();
-                    JOptionPane.showMessageDialog(Export.this, "Error connecting to RMI registry", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(Export.this, "Error starting server", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
@@ -52,120 +49,62 @@ public class Export extends JDialog implements ShapeListService {
             }
         });
 
-        // Add action listener to the exportButton
-        exportButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                // Define the behavior when the export button is clicked
-                // For example, you can call the onOK() method here if needed
-                try {
-                    initializeServer(); // Start RMI server
-                    exportButton.setEnabled(false); // Disable export button after successful export
-                } catch (RemoteException ex) {
-                    ex.printStackTrace();
-                    JOptionPane.showMessageDialog(Export.this, "Error starting RMI server", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
 
-    private void initializeServer() throws RemoteException {
-        int port = Integer.parseInt(textField2.getText());
+    private void startServer() throws IOException {
+        // Generate the IP address of the server
+        InetAddress localhost = InetAddress.getLocalHost();
+        String ipAddress = localhost.getHostAddress();
 
-        try {
-            // Attempt to locate an existing registry
-            registry = LocateRegistry.getRegistry(port);
-            // If the registry exists, it means it's already created
-            System.out.println("RMI registry already exists on port " + port);
-        } catch (RemoteException e) {
-            // If RemoteException is thrown, it means the registry doesn't exist, so create it
-            System.out.println("Creating RMI registry on port " + port);
-            registry = LocateRegistry.createRegistry(port); // Create RMI registry
+        // Set the generated IP address in the text field
+        textField1.setText(ipAddress);
+
+        // Proceed to start the server as before
+        String portText = textField2.getText();
+        if (portText.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter a valid port number", "Error", JOptionPane.ERROR_MESSAGE);
+            return; // Exit method if port number is empty
         }
+        int port = Integer.parseInt(portText);
+        serverSocket = new ServerSocket(port);
 
-        ShapeListService shapeListService = new ShapeListServiceImpl(); // Create instance of service implementation
-        try {
-            registry.rebind("shapeListService", shapeListService); // Bind service implementation to registry
-        } catch (Exception e) {
-            throw new RemoteException("Failed to bind service to registry", e);
-        }
-    }
+        new Thread(() -> {
+            while (true) {
+                try {
+                    // Accept client connection
+                    Socket clientSocket = serverSocket.accept();
+                    System.out.println("Client connected: " + clientSocket.getInetAddress());
 
-
-    private void onOK() throws RemoteException {
-        String serverAddress = textField1.getText();
-        int port = Integer.parseInt(textField2.getText());
-
-        boolean connected = false; // Flag to track if connected successfully
-
-        for (int attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
-            try {
-                // Attempt to connect to the RMI registry
-                registry = LocateRegistry.getRegistry(serverAddress, port);
-
-                // Check if connection is successful before printing
-                if (registry != null) {
-                    System.out.println("Connected to RMI registry");
-                    connected = true; // Set the flag to true if connected
+                    // Activate the export button
                     exportButton.setEnabled(true);
 
-                    // Get the server's IP address and set it to the textField1
-                    InetAddress inetAddress = InetAddress.getLocalHost();
-                    textField1.setText(inetAddress.getHostAddress());
+                    // Send the ShapeList to the client
+                    ObjectOutputStream outputStream = new ObjectOutputStream(clientSocket.getOutputStream());
+                    outputStream.writeObject(drawingArea.getShapesList());
+                    outputStream.flush();
 
-                    return; // Exit the method if connected
+                    // Close the socket after sending the data
+                    clientSocket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
-            } catch (Exception ex) {
-                ex.printStackTrace();
             }
-
-            // If not connected, wait for a retry delay before the next attempt
-            try {
-                Thread.sleep(RETRY_DELAY);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
-
-        // If all attempts fail, print failure message
-        System.out.println("Connection to RMI registry failed");
-        JOptionPane.showMessageDialog(this, "Connection to RMI registry failed", "Error", JOptionPane.ERROR_MESSAGE);
+        }).start();
     }
+
+
+
 
     private void onCancel() {
-        dispose();
-    }
-
-    @Override
-    public ArrayList<CanvasTools> getShapeList() throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public void updateShapeList(JPanelWrapper newArea) throws RemoteException {
-
-    }
-
-    @Override
-    public void simple() throws RemoteException {
-
-    }
-
-    @Override
-    public void sendShape(CanvasTools shape) throws RemoteException {
+        // Close the server socket when cancelling
         try {
-            // Lookup for the ShapeListService instance from the RMI registry
-            ShapeListService shapeListService = (ShapeListService) registry.lookup("shapeListService");
-            // Call the sendShape method on the service instance to send the shape
-            shapeListService.sendShape(shape);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error sending shape", "Error", JOptionPane.ERROR_MESSAGE);
+            if (serverSocket != null && !serverSocket.isClosed()) {
+                serverSocket.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-    }
-
-    @Override
-    public CanvasTools receiveShape() throws RemoteException {
-        return null;
+        dispose();
     }
 }
